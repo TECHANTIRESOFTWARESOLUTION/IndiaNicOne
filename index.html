@@ -1,0 +1,2355 @@
+<!doctype html>
+<html lang="en-US">
+
+<head>
+    <meta charset="UTF-8">
+    <script>if (navigator.userAgent.match(/MSIE|Internet Explorer/i) || navigator.userAgent.match(/Trident\/7\..*?rv:11/i)) { var href = document.location.href; if (!href.match(/[?&]nowprocket/)) { if (href.indexOf("?") == -1) { if (href.indexOf("#") == -1) { document.location.href = href + "?nowprocket=1" } else { document.location.href = href.replace("#", "?nowprocket=1#") } } else { if (href.indexOf("#") == -1) { document.location.href = href + "&nowprocket=1" } else { document.location.href = href.replace("#", "&nowprocket=1#") } } } }</script>
+    <script>class RocketLazyLoadScripts { constructor(e) { this.triggerEvents = e, this.eventOptions = { passive: !0 }, this.userEventHandler = this.triggerListener.bind(this), this.delayedScripts = { normal: [], async: [], defer: [] }, this.allJQueries = [] } _addUserInteractionListener(e) { this.triggerEvents.forEach((t => window.addEventListener(t, e.userEventHandler, e.eventOptions))) } _removeUserInteractionListener(e) { this.triggerEvents.forEach((t => window.removeEventListener(t, e.userEventHandler, e.eventOptions))) } _interceptClicks(e) { e.interceptedClicks = [], e.clickHandler = e._saveClicks.bind(e), window.addEventListener("click", e.clickHandler) } _saveClicks(e) { this.interceptedClicks.push(e), e.target.matches('a[href="#"], a[href="#"] *') && e.preventDefault() } _replayClicks() { window.removeEventListener("click", this.clickHandler), this.interceptedClicks.forEach((e => { e.target.dispatchEvent(new MouseEvent("click", { view: e.view, bubbles: !0, cancelable: !0 })) })) } triggerListener() { this._removeUserInteractionListener(this), "loading" === document.readyState ? document.addEventListener("DOMContentLoaded", this._loadEverythingNow.bind(this)) : this._loadEverythingNow() } async _loadEverythingNow() { this._delayEventListeners(), this._delayJQueryReady(this), this._handleDocumentWrite(), this._registerAllDelayedScripts(), this._preloadAllScripts(), await this._loadScriptsFromList(this.delayedScripts.normal), await this._loadScriptsFromList(this.delayedScripts.defer), await this._loadScriptsFromList(this.delayedScripts.async), await this._triggerDOMContentLoaded(), await this._triggerWindowLoad(), window.dispatchEvent(new Event("rocket-allScriptsLoaded")), this._replayClicks() } _registerAllDelayedScripts() { document.querySelectorAll("script[type=rocketlazyloadscript]").forEach((e => { e.hasAttribute("src") ? e.hasAttribute("async") && !1 !== e.async ? this.delayedScripts.async.push(e) : e.hasAttribute("defer") && !1 !== e.defer || "module" === e.getAttribute("data-rocket-type") ? this.delayedScripts.defer.push(e) : this.delayedScripts.normal.push(e) : this.delayedScripts.normal.push(e) })) } async _transformScript(e) { return await this._requestAnimFrame(), new Promise((t => { const n = document.createElement("script");[...e.attributes].forEach((e => { let t = e.nodeName; "type" !== t && ("data-rocket-type" === t && (t = "type"), n.setAttribute(t, e.nodeValue)) })), e.hasAttribute("src") ? (n.addEventListener("load", t), n.addEventListener("error", t)) : (n.text = e.text, t()), e.parentNode.replaceChild(n, e) })) } async _loadScriptsFromList(e) { const t = e.shift(); return t ? (await this._transformScript(t), this._loadScriptsFromList(e)) : Promise.resolve() } _preloadAllScripts() { var e = document.createDocumentFragment();[...this.delayedScripts.normal, ...this.delayedScripts.defer, ...this.delayedScripts.async].forEach((t => { const n = t.getAttribute("src"); if (n) { const t = document.createElement("link"); t.href = n, t.rel = "preload", t.as = "script", e.appendChild(t) } })), document.head.appendChild(e) } _delayEventListeners() { let e = {}; function t(t, n) { !function (t) { function n(n) { return e[t].eventsToRewrite.indexOf(n) >= 0 ? "rocket-" + n : n } e[t] || (e[t] = { originalFunctions: { add: t.addEventListener, remove: t.removeEventListener }, eventsToRewrite: [] }, t.addEventListener = function () { arguments[0] = n(arguments[0]), e[t].originalFunctions.add.apply(t, arguments) }, t.removeEventListener = function () { arguments[0] = n(arguments[0]), e[t].originalFunctions.remove.apply(t, arguments) }) }(t), e[t].eventsToRewrite.push(n) } function n(e, t) { let n = e[t]; Object.defineProperty(e, t, { get: () => n || function () { }, set(i) { e["rocket" + t] = n = i } }) } t(document, "DOMContentLoaded"), t(window, "DOMContentLoaded"), t(window, "load"), t(window, "pageshow"), t(document, "readystatechange"), n(document, "onreadystatechange"), n(window, "onload"), n(window, "onpageshow") } _delayJQueryReady(e) { let t = window.jQuery; Object.defineProperty(window, "jQuery", { get: () => t, set(n) { if (n && n.fn && !e.allJQueries.includes(n)) { n.fn.ready = n.fn.init.prototype.ready = function (t) { e.domReadyFired ? t.bind(document)(n) : document.addEventListener("rocket-DOMContentLoaded", (() => t.bind(document)(n))) }; const t = n.fn.on; n.fn.on = n.fn.init.prototype.on = function () { if (this[0] === window) { function e(e) { return e.split(" ").map((e => "load" === e || 0 === e.indexOf("load.") ? "rocket-jquery-load" : e)).join(" ") } "string" == typeof arguments[0] || arguments[0] instanceof String ? arguments[0] = e(arguments[0]) : "object" == typeof arguments[0] && Object.keys(arguments[0]).forEach((t => { delete Object.assign(arguments[0], { [e(t)]: arguments[0][t] })[t] })) } return t.apply(this, arguments), this }, e.allJQueries.push(n) } t = n } }) } async _triggerDOMContentLoaded() { this.domReadyFired = !0, await this._requestAnimFrame(), document.dispatchEvent(new Event("rocket-DOMContentLoaded")), await this._requestAnimFrame(), window.dispatchEvent(new Event("rocket-DOMContentLoaded")), await this._requestAnimFrame(), document.dispatchEvent(new Event("rocket-readystatechange")), await this._requestAnimFrame(), document.rocketonreadystatechange && document.rocketonreadystatechange() } async _triggerWindowLoad() { await this._requestAnimFrame(), window.dispatchEvent(new Event("rocket-load")), await this._requestAnimFrame(), window.rocketonload && window.rocketonload(), await this._requestAnimFrame(), this.allJQueries.forEach((e => e(window).trigger("rocket-jquery-load"))), window.dispatchEvent(new Event("rocket-pageshow")), await this._requestAnimFrame(), window.rocketonpageshow && window.rocketonpageshow() } _handleDocumentWrite() { const e = new Map; document.write = document.writeln = function (t) { const n = document.currentScript, i = document.createRange(), r = n.parentElement; let a = e.get(n); void 0 === a && (a = n.nextSibling, e.set(n, a)); const s = document.createDocumentFragment(); i.setStart(s, 0), s.appendChild(i.createContextualFragment(t)), r.insertBefore(s, a) } } async _requestAnimFrame() { return new Promise((e => requestAnimationFrame(e))) } static run() { const e = new RocketLazyLoadScripts(["keydown", "mousedown", "mousemove", "touchmove", "touchstart", "touchend", "wheel"]); e._addUserInteractionListener(e), e._interceptClicks(e) } } RocketLazyLoadScripts.run();</script>
+
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable='no'" /> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="content-language" content="en-us">
+    <meta name="format-detection" content="telephone=no">
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="msvalidate.01" content="798E4B388AB3A1A38F466DBA1C4B036E" />
+    <!-- <meta name="google-site-verification" content="wAxPOARKGcX3c58NlhDTQy9_XI_mbg2L-MO9lLiQ70U"/> -->
+    <link rel="profile" href="https://gmpg.org/xfn/11">
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Favicon Icon Start -->
+    <!-- Favicon Icon End -->
+    <meta name='robots' content='index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' />
+    <title>Top Web, Mobile App and Custom Software Development Company</title>
+    <style id="rocket-critical-css">
+        intlTelInput.css /wp-content/plugins/inquiry-form/assets/css/intlTelInput.css
+    </style>
+    <link rel="preload"
+        href="https://dcdh7ea8gkhvt.cloudfront.net/wp-content/cache/min/1/1a35354b1b96cf1960a1276972e827e9.css"
+        data-rocket-async="style" as="style" onload="this.onload=null;this.rel='stylesheet'" media="all"
+        data-minify="1" />
+    <style>
+        img.wp-smiley,
+        img.emoji {
+            display: inline !important;
+            border: none !important;
+            box-shadow: none !important;
+            height: 1em !important;
+            width: 1em !important;
+            margin: 0 0.07em !important;
+            vertical-align: -0.1em !important;
+            background: none !important;
+            padding: 0 !important;
+        }
+    </style>
+    <script type="rocketlazyloadscript"
+        src='https://dcdh7ea8gkhvt.cloudfront.net/wp-includes/js/jquery/jquery.min.js?ver=3.6.1' id='jquery-core-js'
+        defer></script>
+    <script type="rocketlazyloadscript"
+        src='https://dcdh7ea8gkhvt.cloudfront.net/wp-includes/js/jquery/jquery-migrate.min.js?ver=3.3.2'
+        id='jquery-migrate-js' defer></script>
+    <link rel="https://api.w.org/" href="https://www.indianic.com/wp-json/" />
+    <link rel="alternate" type="application/json" href="https://www.indianic.com/wp-json/wp/v2/pages/40423" />
+    <link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://www.indianic.com/xmlrpc.php?rsd" />
+    <link rel="wlwmanifest" type="application/wlwmanifest+xml"
+        href="https://www.indianic.com/wp-includes/wlwmanifest.xml" />
+    <meta name="generator" content="WordPress 6.1.1" />
+    <link rel='shortlink' href='https://www.indianic.com/' />
+
+    <link rel="preload" as="font"
+        href="https://dcdh7ea8gkhvt.cloudfront.net/wp-content/themes/indianic/assets/fonts/poppins/Poppins-SemiBold.woff"
+        crossorigin>
+    <link rel="preload" as="font"
+        href="https://dcdh7ea8gkhvt.cloudfront.net/wp-content/themes/indianic/assets/fonts/icomoon/icomoon.ttf?sczkro"
+        crossorigin>
+    <link rel="preload" as="font"
+        href="https://dcdh7ea8gkhvt.cloudfront.net/wp-content/themes/indianic/assets/fonts/poppins/Poppins-Regular.woff"
+        crossorigin>
+    <link rel="preload" as="font"
+        href="https://dcdh7ea8gkhvt.cloudfront.net/wp-content/themes/indianic/assets/fonts/poppins/Poppins-ExtraBold.woff"
+        crossorigin>
+    <link rel="preload" as="font"
+        href="https://dcdh7ea8gkhvt.cloudfront.net/wp-content/themes/indianic_mobile/assets/fonts/icomoon/icomoon.ttf?sczkro"
+        crossorigin>
+    <link rel="preload" as="font"
+        href="https://dcdh7ea8gkhvt.cloudfront.net/wp-content/themes/indianic_mobile/assets/fonts/poppins/Poppins-ExtraBold.woff"
+        crossorigin>
+    <link rel="preload" as="font"
+        href="https://dcdh7ea8gkhvt.cloudfront.net/wp-content/themes/indianic_mobile/assets/fonts/poppins/Poppins-Regular.woff"
+        crossorigin>
+    <link rel="preload" as="font"
+        href="https://dcdh7ea8gkhvt.cloudfront.net/wp-content/themes/indianic_mobile/assets/fonts/poppins/Poppins-SemiBold.woff"
+        crossorigin>
+    <style id="wp-custom-css">
+        .page-template-template-solutions .casestudy-sec .title-block {
+            margin-bottom: 20px;
+        }
+
+        .page-template-template-home .listing-sm-img {
+            box-shadow: 0 5px 30px 0 rgba(0, 0, 0, 0.1);
+        }
+
+        .enquiry-page-form .contact-section .contact-form-sec form.form_brand,
+        .sidemenu .cbp-spmenu {
+            background-color: #fafafa;
+        }
+
+        .page-template-template-careers .globalNav .navSection.secondary .btn-orange,
+        .we-offer-section .find-job-section,
+        .page-template-template-careers .btn-orange.ctn-btn {
+            display: none;
+        }
+
+        .page-template-template-careers .globalNav li.secondary {
+            justify-content: end;
+        }
+
+        .listing-slider-sec .brand-logo-img img.svg-convert {
+            object-fit: contain;
+            width: 200px;
+            height: 64px;
+            object-position: left;
+        }
+
+        @media only screen and (max-width: 1024px) {
+
+            .sb-main .sb-chat-btn,
+            .sb-main .sb-chat-btn img {
+                width: 40px;
+                height: 40px;
+            }
+
+            .sb-main .sb-chat-btn {
+                bottom: 15px;
+                right: 15px;
+            }
+
+            .contact-box .contact-row a {
+                flex-direction: column;
+            }
+        }
+    </style>
+    <noscript>
+        <style id="rocket-lazyload-nojs-css">
+            .rll-youtube-player,
+            [data-lazy-src] {
+                display: none !important;
+            }
+        </style>
+    </noscript>
+    <script type="rocketlazyloadscript">
+/*! loadCSS rel=preload polyfill. [c]2017 Filament Group, Inc. MIT License */
+(function(w){"use strict";if(!w.loadCSS){w.loadCSS=function(){}}
+var rp=loadCSS.relpreload={};rp.support=(function(){var ret;try{ret=w.document.createElement("link").relList.supports("preload")}catch(e){ret=!1}
+return function(){return ret}})();rp.bindMediaToggle=function(link){var finalMedia=link.media||"all";function enableStylesheet(){link.media=finalMedia}
+if(link.addEventListener){link.addEventListener("load",enableStylesheet)}else if(link.attachEvent){link.attachEvent("onload",enableStylesheet)}
+setTimeout(function(){link.rel="stylesheet";link.media="only x"});setTimeout(enableStylesheet,3000)};rp.poly=function(){if(rp.support()){return}
+var links=w.document.getElementsByTagName("link");for(var i=0;i<links.length;i++){var link=links[i];if(link.rel==="preload"&&link.getAttribute("as")==="style"&&!link.getAttribute("data-loadcss")){link.setAttribute("data-loadcss",!0);rp.bindMediaToggle(link)}}};if(!rp.support()){rp.poly();var run=w.setInterval(rp.poly,500);if(w.addEventListener){w.addEventListener("load",function(){rp.poly();w.clearInterval(run)})}else if(w.attachEvent){w.attachEvent("onload",function(){rp.poly();w.clearInterval(run)})}}
+if(typeof exports!=="undefined"){exports.loadCSS=loadCSS}
+else{w.loadCSS=loadCSS}}(typeof global!=="undefined"?global:this))
+</script>
+    <script type="rocketlazyloadscript" data-rocket-type="text/javascript">
+      if(!window.localStorage.getItem("referrer"))
+      {
+       window.localStorage.setItem('referrer', btoa(document.referrer));
+      }
+  </script>
+    <!-- Google Tag Manager -->
+    <script type="rocketlazyloadscript">
+      (function (w, d, s, l, i) {
+        w[l] = w[l] || []; w[l].push({
+          'gtm.start':
+            new Date().getTime(), event: 'gtm.js'
+        }); var f = d.getElementsByTagName(s)[0],
+          j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+            'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+      })(window, document, 'script', 'dataLayer', 'GTM-NFFTMLS');
+    
+  </script>
+    <!-- End Google Tag Manager -->
+</head>
+
+
+
+<body style="color: #8a4141;"
+    class="home page-template page-template-template-home page-template-template-home-php page page-id-40423 body-theme-white"
+    id="27143225">
+
+    <input type="hidden" name="random" value="352770403">
+
+
+    <script type="rocketlazyloadscript">
+      document.write('<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NFFTMLS" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>');
+    var global = global || window;
+    window.dataLayer = window.dataLayer || [];
+  </script>
+    <header class="globalNav noDropdownTransition initialized ">
+        <nav class="container-lg">
+            <ul class="navRoot d-flex align-items-center justify-content-between">
+                <li class="navSection logo">
+                    <a href="index.html"><img src="img/tecg.jpg" alt=""></a>
+                </li>
+                <li class="navSection primary d-flex align-items-center justify-content-center">
+                    <div class="mb-logo">
+                        <a class="p-0" aria-label="Techjuly Logo" href="file:///C:/Users/ajayk/Downloads/oc.png"
+                            title="Techjuly">
+
+                        </a>
+                    </div>
+                    <a href="about.html" class="rootLink hasDropdown" data-dropdown="about" aria-haspopup="true"
+                        aria-expanded="false" title="About">
+                        <span>About</span>
+                    </a>
+                    <a href="focus.html" class="rootLink hasDropdown" data-dropdown="focus" aria-haspopup="true"
+                        aria-expanded="false" title="Focus">
+                        <span>Focus</span>
+                    </a>
+                    <a href="industries.html" class="rootLink hasDropdown" data-dropdown="industries"
+                        aria-haspopup="true" aria-expanded="false" title="Industries">
+                        <span>Industries</span>
+                    </a>
+                    <a href="services.html" class="rootLink hasDropdown" data-dropdown="what-we-do" aria-haspopup="true"
+                        aria-expanded="false" title="Services">
+                        <span>Services</span>
+                    </a>
+                    <a href="methodology.html" class="rootLink hasDropdown" data-dropdown="methodology-2"
+                        aria-haspopup="true" aria-expanded="false" title="Methodology">
+                        <span>Methodology</span>
+                    </a>
+
+
+
+                <li class="navSection secondary d-flex align-items-center">
+                    <button type="button" class="rootLink btn-orange" data-toggle="modal"
+                        data-target="#chat-modal">Contact Us <span class="fa icon-contact-arrow ml-2"></span></button>
+                </li>
+            </ul>
+        </nav>
+        <div class="dropdownRoot" id="header_sub_menu">
+            <div class="dropdownBackground">
+                <div class="alternateBackground"></div>
+            </div>
+            <div class="dropdownArrow"></div>
+            <div class="dropdownContainer">
+                <div class="dropdownSection methodology" data-dropdown="about" aria-hidden="true">
+                    <div class="dropdownContent">
+                        <div class="linkGroup">
+                            <div class="row">
+                                <div class="col-md-6 mar-top-20"><a href="about.html" title="Team">
+                                        <div class="linkGroupCol-head">
+                                            <div class="header-icon"><span class="menu-icon icon-m-team"></span></div>
+                                            <h3>Team</h3>
+                                        </div>
+                                        <div class="linkGroupCol-content">
+                                            <p>Ready to go an extra mile to deliver great software solutions.</p>
+                                        </div>
+                                    </a></div>
+                                <div class="col-md-6 mar-top-20"><a href="how-we-work.html" title="How We Work">
+                                        <div class="linkGroupCol-head">
+                                            <div class="header-icon"><span
+                                                    class="menu-icon icon-ind-improved-collaboration"></span></div>
+                                            <h3>How We Work</h3>
+                                        </div>
+                                        <div class="linkGroupCol-content">
+                                            <p>Get to know how can you work with us.</p>
+                                        </div>
+                                    </a></div>
+
+                                <div class="col-md-6 mar-top-20"><a href="careers.html" title="Careers">
+                                        <div class="linkGroupCol-head">
+                                            <div class="header-icon"><span class="menu-icon icon-m-careers"></span>
+                                            </div>
+                                            <h3>Careers</h3>
+                                        </div>
+                                        <div class="linkGroupCol-content">
+                                            <p>Explore current openings and apply to be a part of Techjuly.</p>
+                                        </div>
+                                    </a></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="dropdownSection" data-dropdown="focus" aria-hidden="true">
+                    <div class="dropdownContent">
+                        <div class="linkInfoGroup blue-gradient ">
+                            <ul class="avatarGroup">
+                                <li><img src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20174%2054'%3E%3C/svg%3E"
+                                        alt="Submenu" width="174" height="54"
+                                        data-lazy-src="https://dcdh7ea8gkhvt.cloudfront.net/wp-content/uploads/2022/12/team-people-pic-v1.webp"><noscript><img
+                                            src="https://dcdh7ea8gkhvt.cloudfront.net/wp-content/uploads/2022/12/team-people-pic-v1.webp"
+                                            alt="Submenu" width="174" height="54"></noscript></li>
+                            </ul>
+                            <div class="contactInfo">
+                                <div class="infoWrap"><span class="sub-title">Build your</span>
+                                    <h3>Agile Team</h3>
+                                    <p>Create your own agile team by forming right set of resources skilled in specific
+                                        streams.</p>
+                                </div><a href="https://www.indianic.com/services/hire-dedicated-developers/"
+                                    class="contactBtn" title="Contact Us">Contact Us</a>
+                            </div>
+                        </div>
+                        <div class="linkGroup columns-3">
+                            <div class="linkGroupCol">
+                                <div class="linkGroupCol-head">
+                                    <div class="header-icon"><span class="menu-icon icon-m-fa-enterprise"></span></div>
+                                    <h3><a href="enterprise.html" title="Enterprise Applications">Enterprise
+                                            Applications</a></h3>
+                                </div>
+                                <div class="linkGroupCol-content">
+                                    <p>Empowering organizations with robust and scalable enterprise applications
+                                        tailored to the needs</p>
+                                </div>
+                            </div>
+                            <div class="linkGroupCol">
+                                <div class="linkGroupCol-head">
+                                    <div class="header-icon"><span class="menu-icon icon-m-fa-ai"></span></div>
+                                    <h3><a href="ai.html" title="Artificial Intelligence">Artificial Intelligence</a>
+                                    </h3>
+                                </div>
+                                <div class="linkGroupCol-content">
+                                    <p>Harnessing the power of artificial intelligence to drive innovation and boost
+                                        efficiency</p>
+                                </div>
+                            </div>
+                            <div class="linkGroupCol">
+                                <div class="linkGroupCol-head">
+                                    <div class="header-icon"><span class="menu-icon icon-m-fa-digital-commerce"></span>
+                                    </div>
+                                    <h3><a href="digital-commerce.html" title="Digital Commerce">Digital Commerce</a>
+                                    </h3>
+                                </div>
+                                <div class="linkGroupCol-content">
+                                    <p>Creating high performance and engaging digital commerce solutions to maximize the
+                                        business</p>
+                                </div>
+                            </div>
+                            <div class="linkGroupCol">
+                                <div class="linkGroupCol-head">
+                                    <div class="header-icon"><span class="menu-icon icon-m-fa-tech-integration"></span>
+                                    </div>
+                                    <h3><a href="technology-integration.html" title="Technology Integration">Technology
+                                            Integration</a></h3>
+                                </div>
+                                <div class="linkGroupCol-content">
+                                    <p>Seamlessly integrating technologies to build cohesive and efficient IT
+                                        infrastructures</p>
+                                </div>
+                            </div>
+                            <div class="linkGroupCol">
+                                <div class="linkGroupCol-head">
+                                    <div class="header-icon"><span class="menu-icon icon-m-fa-automation"></span></div>
+                                    <h3><a href="automation.html" title="Business Automation">Business Automation</a>
+                                    </h3>
+                                </div>
+                                <div class="linkGroupCol-content">
+                                    <p>Streamlining operations and boosting productivity with custom business automation
+                                        solutions</p>
+                                </div>
+                            </div>
+                            <div class="linkGroupCol">
+                                <div class="linkGroupCol-head">
+                                    <div class="header-icon"><span class="menu-icon icon-m-fa-ba"></span></div>
+                                    <h3><a href="bi-analytics.html" title="BI & Analytics">BI &
+                                            Analytics</a></h3>
+                                </div>
+                                <div class="linkGroupCol-content">
+                                    <p>Turning data into actionable insights with our advanced BI and analytics
+                                        development service</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="dropdownSection" data-dropdown="industries" aria-hidden="true">
+                    <div class="dropdownContent withColumnLayout">
+                        <div class="linkInfoGroup   pink-gradient ">
+                            <div class="company-basic">
+                                <div class="ind-data"><span>Countries</span>
+                                    <h3>90+</h3>
+                                </div>
+                                <div class="ind-data"><span>Since</span>
+                                    <h3>1998</h3>
+                                </div>
+                                <div class="ind-data"><span>Projects</span>
+                                    <h3>7000+</h3>
+                                </div>
+                                <div class="ind-data"><span>Clients</span>
+                                    <h3>3000+</h3>
+                                </div>
+                            </div>
+                            <ul class="avatarGroup">
+                                <li><img width="174" height="54"
+                                        src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20174%2054'%3E%3C/svg%3E"
+                                        alt="submenu"
+                                        data-lazy-src="https://dcdh7ea8gkhvt.cloudfront.net/wp-content/uploads/2022/02/menu-avatar.webp"><noscript><img
+                                            width="174" height="54"
+                                            src="https://dcdh7ea8gkhvt.cloudfront.net/wp-content/uploads/2022/02/menu-avatar.webp"
+                                            alt="submenu"></noscript></li>
+                            </ul>
+                            <div class="contactInfo">
+                                <div class="infoWrap">
+                                    <h3></h3>
+                                    <p>Our learning from variety of industries over more than two decades have helped us
+                                        bring immediate impact.</p>
+                                </div><a href="https://www.indianic.com/contact/" class="contactBtn"
+                                    title="Contact Us">Contact Us</a>
+                            </div>
+                        </div>
+                        <div class="linkGroup columns-3 ">
+                            <div class="linkGroupCol">
+                                <div class="linkGroupCol-head">
+                                    <div class="header-icon"><span class="menu-icon icon-m-ind-healthcare"></span></div>
+                                    <h3><a href="healthcare.html" title="Healthcare">Healthcare</a></h3>
+                                </div>
+                                <div class="linkGroupCol-content">
+                                    <ul class=""></ul>
+                                </div>
+                            </div>
+                            <div class="linkGroupCol">
+                                <div class="linkGroupCol-head">
+                                    <div class="header-icon"><span class="menu-icon icon-m-ind-legal"></span></div>
+                                    <h3><a href="legal.html" title="Legal">Legal</a>
+                                    </h3>
+                                </div>
+                                <div class="linkGroupCol-content">
+                                    <ul class=""></ul>
+                                </div>
+                            </div>
+                            <div class="linkGroupCol">
+                                <div class="linkGroupCol-head">
+                                    <div class="header-icon"><span class="menu-icon icon-m-ind-logistic"></span></div>
+                                    <h3><a href="logistics.html" title="Logistics">Logistics</a></h3>
+                                </div>
+                                <div class="linkGroupCol-content">
+                                    <ul class=""></ul>
+                                </div>
+                            </div>
+                            <div class="linkGroupCol">
+                                <div class="linkGroupCol-head">
+                                    <div class="header-icon"><span class="menu-icon icon-m-ind-finance"></span></div>
+                                    <h3><a href="finance.html" title="Finance">Finance</a></h3>
+                                </div>
+                                <div class="linkGroupCol-content">
+                                    <ul class=""></ul>
+                                </div>
+                            </div>
+                            <div class="linkGroupCol">
+                                <div class="linkGroupCol-head">
+                                    <div class="header-icon"><span class="menu-icon icon-m-ind-education"></span></div>
+                                    <h3><a href="education.html" title="Education">Education</a></h3>
+                                </div>
+                                <div class="linkGroupCol-content">
+                                    <ul class=""></ul>
+                                </div>
+                            </div>
+                            <div class="linkGroupCol">
+                                <div class="linkGroupCol-head">
+                                    <div class="header-icon"><span class="menu-icon icon-m-ind-social-media"></span>
+                                    </div>
+                                    <h3><a href="social-media.html" title="Social Media">Social Media</a></h3>
+                                </div>
+                                <div class="linkGroupCol-content">
+                                    <ul class=""></ul>
+                                </div>
+                            </div>
+                            <div class="linkGroupCol">
+                                <div class="linkGroupCol-head">
+                                    <div class="header-icon"><span class="menu-icon icon-m-ind-media"></span></div>
+                                    <h3><a href="media-ott.html" title="Media &#038; OTT">Media &#038; OTT</a></h3>
+                                </div>
+                                <div class="linkGroupCol-content">
+                                    <ul class=""></ul>
+                                </div>
+                            </div>
+                            <div class="linkGroupCol">
+                                <div class="linkGroupCol-head">
+                                    <div class="header-icon"><span class="menu-icon icon-m-ind-insurance"></span></div>
+                                    <h3><a href="insurance.html" title="Insurance">Insurance</a></h3>
+                                </div>
+                                <div class="linkGroupCol-content">
+                                    <ul class=""></ul>
+                                </div>
+                            </div>
+                            <div class="linkGroupCol">
+                                <div class="linkGroupCol-head">
+                                    <div class="header-icon"><span class="menu-icon icon-m-ind-travel"></span></div>
+                                    <h3><a href="travel.html" title="Travel">Travel</a>
+                                    </h3>
+                                </div>
+                                <div class="linkGroupCol-content">
+                                    <ul class=""></ul>
+                                </div>
+                            </div>
+                            <div class="linkGroupCol">
+                                <div class="linkGroupCol-head">
+                                    <div class="header-icon"><span class="menu-icon icon-ind-building-models"></span>
+                                    </div>
+                                    <h3><a href="manufacturing.html" title="Manufacturing">Manufacturing</a></h3>
+                                </div>
+                                <div class="linkGroupCol-content">
+                                    <ul class=""></ul>
+                                </div>
+                            </div>
+                            <div class="linkGroupCol">
+                                <div class="linkGroupCol-head">
+                                    <div class="header-icon"><span class="menu-icon icon-m-ind-retail"></span></div>
+                                    <h3><a href="retail.html" title="Retail">Retail</a>
+                                    </h3>
+                                </div>
+                                <div class="linkGroupCol-content">
+                                    <ul class=""></ul>
+                                </div>
+                            </div>
+                            <div class="linkGroupCol">
+                                <div class="linkGroupCol-head">
+                                    <div class="header-icon"><span class="menu-icon icon-m-ind-it-telecom"></span></div>
+                                    <h3><a href="it-and-telecom.html" title="IT &#038; Telecom">IT &#038; Telecom</a>
+                                    </h3>
+                                </div>
+                                <div class="linkGroupCol-content">
+                                    <ul class=""></ul>
+                                </div>
+                            </div>
+                            <div class="linkGroupCol">
+                                <div class="linkGroupCol-head">
+                                    <div class="header-icon"><span class="menu-icon icon-m-ind-construction"></span>
+                                    </div>
+                                    <h3><a href="construction.html" title="Construction">Construction</a></h3>
+                                </div>
+                                <div class="linkGroupCol-content">
+                                    <ul class=""></ul>
+                                </div>
+                            </div>
+                            <div class="linkGroupCol">
+                                <div class="linkGroupCol-head">
+                                    <div class="header-icon"><span class="menu-icon icon-m-ind-beautify"></span></div>
+                                    <h3><a href="beauty-lifestyle.html" title="Beauty &#038; Lifestyle">Beauty &#038;
+                                            Lifestyle</a></h3>
+                                </div>
+                                <div class="linkGroupCol-content">
+                                    <ul class=""></ul>
+                                </div>
+                            </div>
+                            <div class="linkGroupCol">
+                                <div class="linkGroupCol-head">
+                                    <div class="header-icon"><span class="menu-icon icon-m-ind-sports"></span></div>
+                                    <h3><a href="sports.html" title="Sports">Sports</a>
+                                    </h3>
+                                </div>
+                                <div class="linkGroupCol-content">
+                                    <ul class=""></ul>
+                                </div>
+                            </div>
+                            <div class="linkGroupCol">
+                                <div class="linkGroupCol-head">
+                                    <div class="header-icon"><span class="menu-icon icon-m-ind-ondemand"></span></div>
+                                    <h3><a href="on-demand.html" title="On Demand">On
+                                            Demand</a></h3>
+                                </div>
+                                <div class="linkGroupCol-content">
+                                    <ul class=""></ul>
+                                </div>
+                            </div>
+                            <div class="linkGroupCol">
+                                <div class="linkGroupCol-head">
+                                    <div class="header-icon"><span class="menu-icon icon-m-ind-retail"></span></div>
+                                    <h3><a href="marketplace.html" title="Marketplace">Marketplace</a></h3>
+                                </div>
+                                <div class="linkGroupCol-content">
+                                    <ul class=""></ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="dropdownSection" data-dropdown="what-we-do" aria-hidden="true">
+                    <div class="dropdownContent">
+                        <div class="linkInfoGroup cyan-gradient ">
+                            <ul class="avatarGroup">
+                                <li><img src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20174%2054'%3E%3C/svg%3E"
+                                        alt="Submenu" width="174" height="54"
+                                        data-lazy-src="https://dcdh7ea8gkhvt.cloudfront.net/wp-content/uploads/2023/07/m-services-menu-img.webp"><noscript><img
+                                            src="https://dcdh7ea8gkhvt.cloudfront.net/wp-content/uploads/2023/07/m-services-menu-img.webp"
+                                            alt="Submenu" width="174" height="54"></noscript></li>
+                            </ul>
+                            <div class="contactInfo">
+                                <div class="infoWrap"><span class="sub-title"></span>
+                                    <h3>Discovery Workshop</h3>
+                                    <p>Define functional scope of your project to plan project budget and timeline.</p>
+                                </div><a href="discovery-process.html" class="contactBtn" title="View More">View
+                                    More</a>
+                            </div>
+                        </div>
+                        <div class="linkGroup columns-3">
+                            <div class="linkGroupCol">
+                                <div class="linkGroupCol-head">
+                                    <div class="header-icon"><span class="menu-icon icon-ind-apps-apis"></span></div>
+                                    <h3><a href="web-development.html" title="Web Development">Web Development</a></h3>
+                                </div>
+                                <div class="linkGroupCol-content">
+                                    <p>Sculpting modern, dynamic web applications for a digital-first world</p>
+                                </div>
+                            </div>
+                            <div class="linkGroupCol">
+                                <div class="linkGroupCol-head">
+                                    <div class="header-icon"><span class="menu-icon icon-m-web-mobile"></span></div>
+                                    <h3><a href="mobile-app-development.html" title="Mobile Apps">Mobile Apps</a></h3>
+                                </div>
+                                <div class="linkGroupCol-content">
+                                    <p>Designing high-performing mobile apps for a connected future</p>
+                                </div>
+                            </div>
+                            <div class="linkGroupCol">
+                                <div class="linkGroupCol-head">
+                                    <div class="header-icon"><span class="menu-icon icon-m-web-aiml"></span></div>
+                                    <h3><a href="ai-and-ml-services.html" title="AI / ML">AI / ML</a></h3>
+                                </div>
+                                <div class="linkGroupCol-content">
+                                    <p>Leveraging AI & ML to Deliver innovative solutions</p>
+                                </div>
+                            </div>
+                            <div class="linkGroupCol">
+                                <div class="linkGroupCol-head">
+                                    <div class="header-icon"><span class="menu-icon icon-m-web-ux"></span></div>
+                                    <h3><a href="design.html" title="UI/UX Consultancy">UI/UX Consultancy</a></h3>
+                                </div>
+                                <div class="linkGroupCol-content">
+                                    <p>Enhancing experience with intuitive and user-centric design services</p>
+                                </div>
+                            </div>
+                            <div class="linkGroupCol">
+                                <div class="linkGroupCol-head">
+                                    <div class="header-icon"><span class="menu-icon icon-m-web-devops"></span></div>
+                                    <h3><a href="devops.html" title="DevOps">DevOps</a>
+                                    </h3>
+                                </div>
+                                <div class="linkGroupCol-content">
+                                    <p>Streamlined Processes and Collaboration for code lifecycle</p>
+                                </div>
+                            </div>
+                            <div class="linkGroupCol">
+                                <div class="linkGroupCol-head">
+                                    <div class="header-icon"><span class="menu-icon icon-m-web-qa"></span></div>
+                                    <h3><a href="quality-assurance-services.html" title="QA">QA</a></h3>
+                                </div>
+                                <div class="linkGroupCol-content">
+                                    <p>Delivering excellence with robust automated and manual QA </p>
+                                </div>
+                            </div>
+                            <div class="linkGroupCol">
+                                <div class="linkGroupCol-head">
+                                    <div class="header-icon"><span class="menu-icon icon-m-web-iot"></span></div>
+                                    <h3><a href="internet-of-things.html" title="IoT">IoT</a></h3>
+                                </div>
+                                <div class="linkGroupCol-content">
+                                    <p>Leveraging the device ecosystems to build a connected world</p>
+                                </div>
+                            </div>
+                            <div class="linkGroupCol">
+                                <div class="linkGroupCol-head">
+                                    <div class="header-icon"><span class="menu-icon icon-m-web-marketing"></span></div>
+                                    <h3><a href="digital-marketing-services.html" title="Marketing">Marketing</a></h3>
+                                </div>
+                                <div class="linkGroupCol-content">
+                                    <p>Crafting result-driven strategies to propel your business forward</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="dropdownSection methodology" data-dropdown="methodology-2" aria-hidden="true">
+                    <div class="dropdownContent">
+                        <div class="linkGroup">
+                            <div class="row">
+                                <div class="col-md-6 mar-top-20"><a href="discovery-process.html" title="Discovery">
+                                        <div class="linkGroupCol-head">
+                                            <div class="header-icon"><span
+                                                    class="menu-icon icon-m-fa-ml-discovery"></span></div>
+                                            <h3>Discovery</h3>
+                                        </div>
+                                        <div class="linkGroupCol-content">
+                                            <p>Transforming ideas into a measurable scope with functional UI/UX Design.
+                                            </p>
+                                        </div>
+                                    </a></div>
+                                <div class="col-md-6 mar-top-20"><a href="project-excution.html"
+                                        title="Project Execution">
+                                        <div class="linkGroupCol-head">
+                                            <div class="header-icon"><span
+                                                    class="menu-icon icon-m-fa-ml-project-execution"></span></div>
+                                            <h3>Project Execution</h3>
+                                        </div>
+                                        <div class="linkGroupCol-content">
+                                            <p>Get to know how we balance the critical triangle of Cost, Time and Scope.
+                                            </p>
+                                        </div>
+                                    </a></div>
+                                <div class="col-md-6 mar-top-20"><a href="dedicated-teams.html"
+                                        title="Dedicated Developers">
+                                        <div class="linkGroupCol-head">
+                                            <div class="header-icon"><span class="menu-icon icon-ind-apps-apis"></span>
+                                            </div>
+                                            <h3>Dedicated Developers</h3>
+                                        </div>
+                                        <div class="linkGroupCol-content">
+                                            <p>Form an expert team who works remotely, under your supervision.</p>
+                                        </div>
+                                    </a></div>
+                                <div class="col-md-6 mar-top-20"><a href="project-review.html" title="Project Review">
+                                        <div class="linkGroupCol-head">
+                                            <div class="header-icon"><span
+                                                    class="menu-icon icon-m-fa-ml-project-review"></span></div>
+                                            <h3>Project Review</h3>
+                                        </div>
+                                        <div class="linkGroupCol-content">
+                                            <p>Proactive review at every stage for the efficient delivery.</p>
+                                        </div>
+                                    </a></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </header>
+
+        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+            <ol class="carousel-indicators">
+              <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+              <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+              <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+            </ol>
+            <div class="carousel-inner">
+              <div class="carousel-item active">
+                <img class="d-block w-100" src="img/pc.jpg" alt="First slide">
+              </div>
+              <div class="carousel-item">
+                <img class="d-block w-100" src="img/tecg.jpg" alt="Second slide">
+              </div>
+              <div class="carousel-item">
+                <img class="d-block w-100" src="img/tecg.jpg" alt="Third slide">
+              </div>
+            </div>
+            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="sr-only">Next</span>
+            </a>
+          </div>
+   
+    <!-- Home Hero Banner Section End -->
+    <!-- AI Tools Section Start -->
+    <section class="ai-tools-wrap">
+        <div class="container">
+            <div class="title-wrap text-center mb-0">
+                <h4>AI Tools</h4>
+                <h2 class="mb-2">AI Solutions for your Business</h2>
+                <p>Click on the product tile to find out more</p>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <a data-bg="https://dcdh7ea8gkhvt.cloudfront.net/wp-content/uploads/2023/05/newra-bg-img.jpg"
+                        href="/newra/" area-label="NewRA" class="tool-wrap orange-bg rocket-lazyload"
+                        style="background-size: cover;">
+                        <h2>NewRA</h2>
+                        <p>Build AI conversations with your Custom Knowledge Base</p>
+                    </a>
+                </div>
+                <div class="col-md-6">
+                    <a data-bg="https://dcdh7ea8gkhvt.cloudfront.net/wp-content/uploads/2023/05/whizbot-bg-img.jpg"
+                        href="/whizbot/" area-label="Whizbot" class="tool-wrap green-bg rocket-lazyload"
+                        style="background-size: cover;">
+                        <h2>Whizbot</h2>
+                        <p>AI based WhatsApp Chatbot</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- AI Tools Section End -->
+    <section class="about-company-section pt-120">
+        <div class="container">
+            <h2 class="mrg-b">Hire the Best Web and Mobile App Developers</h2>
+            <div class="row">
+                <div class="col-12 col-md-9 about-content">
+                    <p>Techjuly is a top web design agency and software development company with a large pool of
+                        software developers available for dedicated and fixed time/cost projects. Hire web
+                        developers from Techjuly who have proven expertise in trending web technologies like PHP,
+                        Laravel, Magento, ReactJS, front-end technologies like AngularJS and back-end technologies
+                        like Node.js to develop custom and responsive websites, web apps and eCommerce solutions.
+                    </p>
+                    <p>Our Android app, iOS app and cross-platform mobile app developers are adroit in the latest
+                        mobile technologies and tools like Android Studio, Xcode, Kotlin, Xamarin, PhoneGap, React
+                        Native, etc. to build next-gen mobile applications.</p>
+                </div>
+
+            </div>
+
+            <div class="growth-detail text-center sec-pad-100">
+                <h2>We've helped businesses increase their revenue on an average by 90% in their first year with us!
+                </h2>
+                <div class="counter-sec">
+                    <div class="row">
+                        <div class="col-12 col-md-4 col-lg-4 counters">
+                            <span class="counter" data-count="3000">0</span>
+
+                            <span>+</span>
+
+                            <p>Satisfied Clients Across the Globe</p>
+                        </div>
+                        <div class="col-12 col-md-4 col-lg-4 counters">
+                            <span class="counter" data-count="7000">0</span>
+
+                            <span>+</span>
+
+                            <p>Projects Delivered Successfully</p>
+                        </div>
+                        <div class="col-12 col-md-4 col-lg-4 counters">
+                            <span class="counter" data-count="600">0</span>
+
+                            <span>+</span>
+
+                            <p>Experts Under the Same Roof</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+    <!-- About Video Section End -->
+    <script type="rocketlazyloadscript" data-rocket-type="text/javascript">window.addEventListener('DOMContentLoaded', function() {
+jQuery(document).ready(function(){
+   jQuery('.video-full-screen').click(function(){
+    var element = document.getElementById('home_video_bx');       
+    if (element.mozRequestFullScreen) {
+        element.mozRequestFullScreen();
+    } else if (element.webkitRequestFullScreen) {
+        element.webkitRequestFullScreen();
+    }  
+   }); 
+});
+});</script>
+
+    <script type="rocketlazyloadscript" data-rocket-type="text/javascript">window.addEventListener('DOMContentLoaded', function() {
+    // Once counter animated then stop for second time animation
+    var SingleLoadCounter = 0;
+    jQuery(window).scroll(function () {
+        if (jQuery('.growth-detail').length > 0) {                
+            if (isScrolledIntoView('.growth-detail') && SingleLoadCounter == 0) {    
+                jQuery('.counter').each(function () {
+                    var $this = jQuery(this),
+                    countTo = $this.attr('data-count');
+                    jQuery({ countNum: $this.text() }).animate({
+                        countNum: countTo
+                    },
+                    {
+                        duration: 1000,
+                        easing: 'linear',
+                        step: function () {
+                            $this.text(Math.floor(this.countNum));
+                        },
+                        complete: function () {
+                            $this.text(this.countNum);
+                        }
+                    });
+                    SingleLoadCounter = 1;
+                });
+            }
+        }
+    });
+
+    function isScrolledIntoView(elem) {
+        var docViewTop = jQuery(window).scrollTop();
+        var docViewBottom = docViewTop + jQuery(window).height();
+        var elemTop = jQuery(elem).offset().top;
+        var elemBottom = elemTop + jQuery(elem).height();
+        return ((elemBottom <= docViewBottom) && (elemTop >= docViewTop));
+    }
+});</script>
+    <!-- About Buisness Growth Section End -->
+    <section class="discovery-process-section p-tb-120">
+        <div class="container">
+            <h2 class="mrg-b">We Simplify Software Development Process</h2>
+            <video autoplay muted loop id="myVideo">
+                <source src="img/Work-Cycle-1.m4v" type="video/mp4">
+            </video>
+        </div>
+    </section>
+    <section class="technologies-section pt-120">
+        <div class="container">
+            <h2 class="mrg-b">Technologies we work with</h2>
+
+            <div class="technologies-tab">
+
+                <!-- Nav Tabs Start -->
+
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item" role="tab">
+                        <a data-toggle="tab" class="nav-link active" href="#mobile" aria-label="Mobile">
+                            Mobile </a>
+                    </li>
+                    <li class="nav-item" role="tab">
+                        <a data-toggle="tab" class="nav-link" href="#front-end" aria-label="Front End">
+                            Front End </a>
+                    </li>
+                    <li class="nav-item" role="tab">
+                        <a data-toggle="tab" class="nav-link" href="#database" aria-label="Database">
+                            Database </a>
+                    </li>
+                    <li class="nav-item" role="tab">
+                        <a data-toggle="tab" class="nav-link" href="#backend" aria-label="Backend">
+                            Backend </a>
+                    </li>
+                    <li class="nav-item" role="tab">
+                        <a data-toggle="tab" class="nav-link" href="#cms" aria-label="CMS">
+                            CMS </a>
+                    </li>
+                    <li class="nav-item" role="tab">
+                        <a data-toggle="tab" class="nav-link" href="#infra-and-devops" aria-label="Infra and DevOps">
+                            Infra and DevOps </a>
+                    </li>
+                </ul>
+                <!-- Nav Tabs End -->
+
+                <!-- Tab Panel Start -->
+                <div class="tab-content ">
+                    <div role="tabpanel" class="tab-pane fade show in active" id="mobile">
+                        <div class="row">
+                            <div class="col-4 col-sm-4 col-md-3 col-lg-2">
+                                <a class="icon-block" aria-label="iOS"
+                                    href="https://www.indianic.com/services/mobile/ios-app-development/">
+                                    <div class="icon-box">
+                                        <span class="tech-icon icon-ic-mobile-technology-ios"></span>
+                                    </div>
+                                    <h3>iOS</h3>
+                                </a>
+                            </div>
+                            <div class="col-4 col-sm-4 col-md-3 col-lg-2">
+                                <a class="icon-block" aria-label="Android"
+                                    href="https://www.indianic.com/services/mobile/android-application-development-company/">
+                                    <div class="icon-box">
+                                        <span class="tech-icon icon-ic-mobile-technology-android"></span>
+                                    </div>
+                                    <h3>Android</h3>
+                                </a>
+                            </div>
+                            <div class="col-4 col-sm-4 col-md-3 col-lg-2">
+                                <a class="icon-block" aria-label="React Native"
+                                    href="https://www.indianic.com/services/mobile/react-native-app-development/">
+                                    <div class="icon-box">
+                                        <span class="tech-icon icon-ic-mobile-technology-react-native"></span>
+                                    </div>
+                                    <h3>React Native</h3>
+                                </a>
+                            </div>
+                            <div class="col-4 col-sm-4 col-md-3 col-lg-2">
+                                <a class="icon-block" aria-label="Flutter"
+                                    href="https://www.indianic.com/services/mobile/flutter-app-development-company/">
+                                    <div class="icon-box">
+                                        <span class="tech-icon icon-ic-mobile-technology-flutter"></span>
+                                    </div>
+                                    <h3>Flutter</h3>
+                                </a>
+                            </div>
+                            <div class="col-4 col-sm-4 col-md-3 col-lg-2">
+                                <a class="icon-block" aria-label="Ionic"
+                                    href="https://www.indianic.com/services/mobile/ionic-app-development-company/">
+                                    <div class="icon-box">
+                                        <span class="tech-icon icon-ic-mobile-technology-ionic"></span>
+                                    </div>
+                                    <h3>Ionic</h3>
+                                </a>
+                            </div>
+                            <div class="col-4 col-sm-4 col-md-3 col-lg-2">
+                                <a class="icon-block" aria-label="Swift"
+                                    href="https://www.indianic.com/services/mobile/ios-app-development/">
+                                    <div class="icon-box">
+                                        <span class="tech-icon icon-ic-mobile-technology-swift"></span>
+                                    </div>
+                                    <h3>Swift</h3>
+                                </a>
+                            </div>
+                            <div class="col-4 col-sm-4 col-md-3 col-lg-2">
+                                <a class="icon-block" aria-label="Kotlin"
+                                    href="https://www.indianic.com/services/mobile/android-application-development-company/">
+                                    <div class="icon-box">
+                                        <span class="tech-icon icon-ic-mobile-technology-kotlin"></span>
+                                    </div>
+                                    <h3>Kotlin</h3>
+                                </a>
+                            </div>
+                            <div class="col-4 col-sm-4 col-md-3 col-lg-2">
+                                <a class="icon-block" aria-label="ObjectiveC"
+                                    href="https://www.indianic.com/services/mobile/hire-ios-application-developers/">
+                                    <div class="icon-box">
+                                        <span class="tech-icon icon-ic-mobile-technology-objectivec"></span>
+                                    </div>
+                                    <h3>ObjectiveC</h3>
+                                </a>
+                            </div>
+                            <div class="col-4 col-sm-4 col-md-3 col-lg-2">
+                                <a class="icon-block" aria-label="Titanium"
+                                    href="https://www.indianic.com/services/mobile/cross-platform-mobile-app-development/">
+                                    <div class="icon-box">
+                                        <span class="tech-icon icon-ic-mobile-technology-titanium"></span>
+                                    </div>
+                                    <h3>Titanium</h3>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane fade" id="front-end">
+                        <div class="row">
+                            <div class="col-4 col-sm-4 col-md-3 col-lg-2">
+                                <a class="icon-block" aria-label="Angular .JS"
+                                    href="https://www.indianic.com/services/web/angularjs-development-company/">
+                                    <div class="icon-box">
+                                        <span class="tech-icon icon-ic-front-end-technology-angular-js"></span>
+                                    </div>
+                                    <h3>Angular .JS</h3>
+                                </a>
+                            </div>
+                            <div class="col-4 col-sm-4 col-md-3 col-lg-2">
+                                <a class="icon-block" aria-label="React Js"
+                                    href="https://www.indianic.com/services/web/reactjs-development-company/">
+                                    <div class="icon-box">
+                                        <span class="tech-icon icon-ic-mobile-technology-react-native"></span>
+                                    </div>
+                                    <h3>React Js</h3>
+                                </a>
+                            </div>
+                            <div class="col-4 col-sm-4 col-md-3 col-lg-2">
+                                <a class="icon-block" aria-label="TypeScript"
+                                    href="https://www.indianic.com/services/web/typescript-development-company/">
+                                    <div class="icon-box">
+                                        <span class="tech-icon icon-ic-front-end-technology-typescript"></span>
+                                    </div>
+                                    <h3>TypeScript</h3>
+                                </a>
+                            </div>
+                            <div class="col-4 col-sm-4 col-md-3 col-lg-2">
+                                <a class="icon-block" aria-label="Vue"
+                                    href="https://www.indianic.com/services/web/vuejs-development-company/">
+                                    <div class="icon-box">
+                                        <span class="tech-icon icon-ic-front-end-technology-vue"></span>
+                                    </div>
+                                    <h3>Vue</h3>
+                                </a>
+                            </div>
+                            <div class="col-4 col-sm-4 col-md-3 col-lg-2">
+                                <a class="icon-block" aria-label="WPF"
+                                    href="https://www.indianic.com/services/web/windows-presentation-foundation-development/">
+                                    <div class="icon-box">
+                                        <span class="tech-icon icon-ic-front-end-technology-wpf"></span>
+                                    </div>
+                                    <h3>WPF</h3>
+                                </a>
+                            </div>
+                            <div class="col-4 col-sm-4 col-md-3 col-lg-2">
+                                <a class="icon-block" aria-label="HTML5"
+                                    href="https://www.indianic.com/services/web/html5-web-development/">
+                                    <div class="icon-box">
+                                        <span class="tech-icon icon-ic-front-end-technology-html5"></span>
+                                    </div>
+                                    <h3>HTML5</h3>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane fade" id="database">
+                        <div class="row">
+                            <div class="col-4 col-sm-4 col-md-3 col-lg-2">
+                                <a class="icon-block" aria-label="Mongo DB"
+                                    href="https://www.indianic.com/services/web/mongodb-development-company/">
+                                    <div class="icon-box">
+                                        <span class="tech-icon icon-ic-database-technology-mango-db"></span>
+                                    </div>
+                                    <h3>Mongo DB</h3>
+                                </a>
+                            </div>
+                            <div class="col-4 col-sm-4 col-md-3 col-lg-2">
+                                <a class="icon-block" aria-label="MySQL"
+                                    href="https://www.indianic.com/services/web/mysql-development-company/">
+                                    <div class="icon-box">
+                                        <span class="tech-icon icon-ic-database-technology-my-sql"></span>
+                                    </div>
+                                    <h3>MySQL</h3>
+                                </a>
+                            </div>
+                            <div class="col-4 col-sm-4 col-md-3 col-lg-2">
+                                <a class="icon-block" aria-label="MsSQL"
+                                    href="https://www.indianic.com/services/web/mysql-development-company/">
+                                    <div class="icon-box">
+                                        <span class="tech-icon icon-ic-database-technology-ms-sql"></span>
+                                    </div>
+                                    <h3>MsSQL</h3>
+                                </a>
+                            </div>
+                            <div class="col-4 col-sm-4 col-md-3 col-lg-2">
+                                <a class="icon-block" aria-label="Firebase"
+                                    href="https://www.indianic.com/services/web/firebase-development-company/">
+                                    <div class="icon-box">
+                                        <span class="tech-icon icon-ic-database-technology-firebase"></span>
+                                    </div>
+                                    <h3>Firebase</h3>
+                                </a>
+                            </div>
+                            <div class="col-4 col-sm-4 col-md-3 col-lg-2">
+                                <a class="icon-block" aria-label="Realm"
+                                    href="https://www.indianic.com/services/mobile/hire-mobile-app-developers/">
+                                    <div class="icon-box">
+                                        <span class="tech-icon icon-ic-database-technology-realm"></span>
+                                    </div>
+                                    <h3>Realm</h3>
+                                </a>
+                            </div>
+                            <div class="col-4 col-sm-4 col-md-3 col-lg-2">
+                                <a class="icon-block" aria-label="DynamoDB"
+                                    href="https://www.indianic.com/services/web/amazon-dynamodb-development-company/">
+                                    <div class="icon-box">
+                                        <span class="tech-icon icon-ic-database-technology-dynamodb"></span>
+                                    </div>
+                                    <h3>DynamoDB</h3>
+                                </a>
+                            </div>
+                            <div class="col-4 col-sm-4 col-md-3 col-lg-2">
+                                <a class="icon-block" aria-label="Oracle"
+                                    href="https://www.indianic.com/services/web/oracle-database-application-development/">
+                                    <div class="icon-box">
+                                        <span class="tech-icon icon-ic-database-technology-oracle"></span>
+                                    </div>
+                                    <h3>Oracle</h3>
+                                </a>
+                            </div>
+                            <div class="col-4 col-sm-4 col-md-3 col-lg-2">
+                                <a class="icon-block" aria-label="PostgreSQL"
+                                    href="https://www.indianic.com/services/web/postgresql-development-company/">
+                                    <div class="icon-box">
+                                        <span class="tech-icon icon-ic-database-technology-postgresql"></span>
+                                    </div>
+                                    <h3>PostgreSQL</h3>
+                                </a>
+                            </div>
+                            <div class="col-4 col-sm-4 col-md-3 col-lg-2">
+                                <a class="icon-block" aria-label="Redis"
+                                    href="https://www.indianic.com/services/web/redis-database-development-company/">
+                                    <div class="icon-box">
+                                        <span class="tech-icon icon-ic-database-technology-redis"></span>
+                                    </div>
+                                    <h3>Redis</h3>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane fade" id="backend">
+                        <div class="row">
+                            <div class="col-4 col-sm-4 col-md-3 col-lg-2">
+                                <a class="icon-block" aria-label="PHP"
+                                    href="https://www.indianic.com/services/web/php-development-services/">
+                                    <div class="icon-box">
+                                        <span class="tech-icon icon-ic-backend-technology-php"></span>
+                                    </div>
+                                    <h3>PHP</h3>
+                                </a>
+                            </div>
+                            <div class="col-4 col-sm-4 col-md-3 col-lg-2">
+                                <a class="icon-block" aria-label="java"
+                                    href="https://www.indianic.com/services/web/java-web-application-development/">
+                                    <div class="icon-box">
+                                        <span class="tech-icon icon-ic-backend-technology-java"></span>
+                                    </div>
+                                    <h3>java</h3>
+                                </a>
+                            </div>
+                            <div class="col-4 col-sm-4 col-md-3 col-lg-2">
+                                <a class="icon-block" aria-label=".NET"
+                                    href="https://www.indianic.com/services/web/asp-dot-net-web-development-services/">
+                                    <div class="icon-box">
+                                        <span class="tech-icon icon-ic-backend-technology-dot-net"></span>
+                                    </div>
+                                    <h3>.NET</h3>
+                                </a>
+                            </div>
+                            <div class="col-4 col-sm-4 col-md-3 col-lg-2">
+                                <a class="icon-block" aria-label="Node .JS"
+                                    href="https://www.indianic.com/services/web/nodejs-development-company/">
+                                    <div class="icon-box">
+                                        <span class="tech-icon icon-ic-backend-technology-node-js"></span>
+                                    </div>
+                                    <h3>Node .JS</h3>
+                                </a>
+                            </div>
+                            <div class="col-4 col-sm-4 col-md-3 col-lg-2">
+                                <a class="icon-block" aria-label="Rails"
+                                    href="https://www.indianic.com/services/web/ruby-on-rails-development-company/">
+                                    <div class="icon-box">
+                                        <span class="tech-icon icon-ic-backend-technology-rails"></span>
+                                    </div>
+                                    <h3>Rails</h3>
+                                </a>
+                            </div>
+                            <div class="col-4 col-sm-4 col-md-3 col-lg-2">
+                                <a class="icon-block" aria-label="Python"
+                                    href="https://www.indianic.com/services/web/python-web-development/">
+                                    <div class="icon-box">
+                                        <span class="tech-icon icon-ic-backend-technology-phthon"></span>
+                                    </div>
+                                    <h3>Python</h3>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane fade" id="cms">
+                        <div class="row">
+                            <div class="col-4 col-sm-4 col-md-3 col-lg-2">
+                                <a class="icon-block" aria-label="Drupal"
+                                    href="https://www.indianic.com/services/web/drupal-web-development/">
+                                    <div class="icon-box">
+                                        <span class="tech-icon icon-ic-cms-technology-drupal"></span>
+                                    </div>
+                                    <h3>Drupal</h3>
+                                </a>
+                            </div>
+                            <div class="col-4 col-sm-4 col-md-3 col-lg-2">
+                                <a class="icon-block" aria-label="Joomla"
+                                    href="https://www.indianic.com/services/web/joomla-web-development/">
+                                    <div class="icon-box">
+                                        <span class="tech-icon icon-ic-cms-technology-joomla"></span>
+                                    </div>
+                                    <h3>Joomla</h3>
+                                </a>
+                            </div>
+                            <div class="col-4 col-sm-4 col-md-3 col-lg-2">
+                                <a class="icon-block" aria-label="Wordpress"
+                                    href="https://www.indianic.com/services/web/wordpress-website-development/">
+                                    <div class="icon-box">
+                                        <span class="tech-icon icon-ic-cms-technology-wordpress"></span>
+                                    </div>
+                                    <h3>Wordpress</h3>
+                                </a>
+                            </div>
+                            <div class="col-4 col-sm-4 col-md-3 col-lg-2">
+                                <a class="icon-block" aria-label="Magento"
+                                    href="https://www.indianic.com/services/web/magento-ecommerce-development/">
+                                    <div class="icon-box">
+                                        <span class="tech-icon icon-ic-cms-technology-magento"></span>
+                                    </div>
+                                    <h3>Magento</h3>
+                                </a>
+                            </div>
+                            <div class="col-4 col-sm-4 col-md-3 col-lg-2">
+                                <a class="icon-block" aria-label="Shopify"
+                                    href="https://www.indianic.com/services/web/shopify-ecommerce-development/">
+                                    <div class="icon-box">
+                                        <span class="tech-icon icon-ic-cms-technology-shopify-plus"></span>
+                                    </div>
+                                    <h3>Shopify</h3>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane fade" id="infra-and-devops">
+                        <div class="row">
+                            <div class="col-4 col-sm-4 col-md-3 col-lg-2">
+                                <a class="icon-block" aria-label="AWS"
+                                    href="https://www.indianic.com/services/web/aws-cloud-applications-development-company/">
+                                    <div class="icon-box">
+                                        <span class="tech-icon icon-ic-infra-technology-aws"></span>
+                                    </div>
+                                    <h3>AWS</h3>
+                                </a>
+                            </div>
+                            <div class="col-4 col-sm-4 col-md-3 col-lg-2">
+                                <a class="icon-block" aria-label="Google Cloud"
+                                    href="https://www.indianic.com/services/web/google-cloud-development-company/">
+                                    <div class="icon-box">
+                                        <span class="tech-icon icon-ic-infra-technology-google-cloud"></span>
+                                    </div>
+                                    <h3>Google Cloud</h3>
+                                </a>
+                            </div>
+                            <div class="col-4 col-sm-4 col-md-3 col-lg-2">
+                                <a class="icon-block" aria-label="Gradle"
+                                    href="https://www.indianic.com/services/web/gradle-build-automation-testing-company/">
+                                    <div class="icon-box">
+                                        <span class="tech-icon icon-ic-infra-technology-gradle"></span>
+                                    </div>
+                                    <h3>Gradle</h3>
+                                </a>
+                            </div>
+                            <div class="col-4 col-sm-4 col-md-3 col-lg-2">
+                                <a class="icon-block" aria-label="Jenkins"
+                                    href="https://www.indianic.com/services/web/jenkins-continuous-integration-testing-company/">
+                                    <div class="icon-box">
+                                        <span class="tech-icon icon-ic-infra-technology-jenkins"></span>
+                                    </div>
+                                    <h3>Jenkins</h3>
+                                </a>
+                            </div>
+                            <div class="col-4 col-sm-4 col-md-3 col-lg-2">
+                                <a class="icon-block" aria-label="Appium"
+                                    href="https://www.indianic.com/services/web/appium-automation-testing-company/">
+                                    <div class="icon-box">
+                                        <span class="tech-icon icon-ic-infra-technology-appium"></span>
+                                    </div>
+                                    <h3>Appium</h3>
+                                </a>
+                            </div>
+                            <div class="col-4 col-sm-4 col-md-3 col-lg-2">
+                                <a class="icon-block" aria-label="Selenium"
+                                    href="https://www.indianic.com/services/web/selenium-automation-testing-company/">
+                                    <div class="icon-box">
+                                        <span class="tech-icon icon-ic-infra-technology-selenium"></span>
+                                    </div>
+                                    <h3>Selenium</h3>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Tab Panel End -->
+
+            </div>
+        </div>
+    </section>
+
+
+
+    <section class="jugaad-section p-tb-120">
+        <div class="container">
+
+            <h2>Innovation, Bottoms Up.</h2>
+
+            <p>When we mix organized Jugaad with our structural R&amp;D and expertise, it can deliver commendable
+                results that create value. All in all, Techjuly believes that Jugaad shouldn&#8217;t replace the
+                structured approach to innovation but rather compliment it like bread &amp; butter. It’s always
+                about finding the right balance between top-down R&amp;D vs bottom-up Jugaad innovation.</p>
+
+
+
+            <!-- Jugaad Video Modal Popup -->
+            <div class="jugaad-video">
+                <div class="jugaad-video-img-play">
+                    <img src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%201000%20562'%3E%3C/svg%3E"
+                        alt="Innovation, Bottoms Up." width="1000" height="562"
+                        data-lazy-src="https://dcdh7ea8gkhvt.cloudfront.net/wp-content/uploads/2022/11/hm-jugaad-video-banner.webp"><noscript><img
+                            src="https://dcdh7ea8gkhvt.cloudfront.net/wp-content/uploads/2022/11/hm-jugaad-video-banner.webp"
+                            alt="Innovation, Bottoms Up." width="1000" height="562"></noscript>
+                </div>
+                <div class="jugaad-video-btn">
+                    <span class="icon-video-play" data-href="https://youtu.be/7n6xRIIc1I4" data-toggle="modal"
+                        data-target="#jugaad-modal"><span class="path1"></span><span class="path2"></span></span>
+                </div>
+            </div>
+            <!-- Jugaad Video Modal Popup -->
+
+            <div class="button-box">
+                <button type="button" class="btn-orange sideform-open" data-toggle="modal"
+                    data-target="#chat-modal">Let's Work Together</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Jugaad Video Modal Popup -->
+    <div class="modal modal-vcenter fade modal-slider" id="jugaad-modal" tabindex="-1" role="dialog"
+        aria-labelledby="basicModal" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-close-btn">
+                    <div class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </div>
+                </div>
+                <div class="modal-body">
+
+                    <div id="iframe_div" class="hidingclick"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Jugaad Video Modal Popup -->
+    <script type="rocketlazyloadscript" data-rocket-type="text/javascript">window.addEventListener('DOMContentLoaded', function() {
+jQuery(document).ready(function(){
+    jQuery("#jugaad-modal").on('hide.bs.modal', function(){
+        jQuery(".hidingclick").html("");
+    });
+
+    jQuery('.icon-video-play').click(function(){
+
+        jQuery('<iframe>').attr('id', 'ytplayer').attr('frameborder', '0').attr('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture').attr('src', 'https://www.youtube.com/embed/7n6xRIIc1I4?autoplay=0&loop=1&rel=0&showinfo=0&controls=0&playlist=7n6xRIIc1I4').attr('height', '540').attr('width', '100%').appendTo('#iframe_div');
+    });
+});
+});</script>
+
+
+    <section class="client-testimonial-section">
+
+        <h2 class="mrg-b text-center">Words from clients</h2>
+
+        <div class="home-client-testimonial d-flex flex-nowrap cs-swiper">
+            <div class="swiper-wrapper d-flex">
+                <div class="testimonial-box swiper-slide">
+                    <div class="client-img">
+                        <img src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20740%20410'%3E%3C/svg%3E"
+                            alt="Alvin Harrison" width="740" height="410"
+                            data-lazy-src="https://dcdh7ea8gkhvt.cloudfront.net/wp-content/uploads/2022/02/alvin-harrison-video-thumb.webp" /><noscript><img
+                                src="https://dcdh7ea8gkhvt.cloudfront.net/wp-content/uploads/2022/02/alvin-harrison-video-thumb.webp"
+                                alt="Alvin Harrison" width="740" height="410" /></noscript>
+                    </div>
+                    <div class="client-video">
+                        <span class="icon-video-play" data-href="https://www.youtube.com/embed/Q0xmfFTWk44"
+                            data-toggle="modal" data-target="#home-modal"><span class="path1"></span><span
+                                class="path2"></span></span>
+                        <div class="client-name">
+                            <h3>Alvin Harrison</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-box swiper-slide">
+                    <div class="client-img">
+                        <img src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20740%20410'%3E%3C/svg%3E"
+                            alt="Alan Cohen" width="740" height="410"
+                            data-lazy-src="https://dcdh7ea8gkhvt.cloudfront.net/wp-content/uploads/2022/02/alen-cohen-video-thumb.webp" /><noscript><img
+                                src="https://dcdh7ea8gkhvt.cloudfront.net/wp-content/uploads/2022/02/alen-cohen-video-thumb.webp"
+                                alt="Alan Cohen" width="740" height="410" /></noscript>
+                    </div>
+                    <div class="client-video">
+                        <span class="icon-video-play" data-href="https://www.youtube.com/embed/Vvq56p1bzGY"
+                            data-toggle="modal" data-target="#home-modal"><span class="path1"></span><span
+                                class="path2"></span></span>
+                        <div class="client-name">
+                            <h3>Alan Cohen</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-box swiper-slide">
+                    <div class="client-img">
+                        <img src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20740%20410'%3E%3C/svg%3E"
+                            alt="Nick Jag" width="740" height="410"
+                            data-lazy-src="https://dcdh7ea8gkhvt.cloudfront.net/wp-content/uploads/2022/02/nick-jack-1-video-thumb.webp" /><noscript><img
+                                src="https://dcdh7ea8gkhvt.cloudfront.net/wp-content/uploads/2022/02/nick-jack-1-video-thumb.webp"
+                                alt="Nick Jag" width="740" height="410" /></noscript>
+                    </div>
+                    <div class="client-video">
+                        <span class="icon-video-play" data-href="https://www.youtube.com/embed/Mhdd8f__Ons"
+                            data-toggle="modal" data-target="#home-modal"><span class="path1"></span><span
+                                class="path2"></span></span>
+                        <div class="client-name">
+                            <h3>Nick Jag</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-box swiper-slide">
+                    <div class="client-img">
+                        <img src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20740%20410'%3E%3C/svg%3E"
+                            alt="Kevin Giffhorn" width="740" height="410"
+                            data-lazy-src="https://dcdh7ea8gkhvt.cloudfront.net/wp-content/uploads/2022/02/kevin-giffhorn-1-video-thumb.webp" /><noscript><img
+                                src="https://dcdh7ea8gkhvt.cloudfront.net/wp-content/uploads/2022/02/kevin-giffhorn-1-video-thumb.webp"
+                                alt="Kevin Giffhorn" width="740" height="410" /></noscript>
+                    </div>
+                    <div class="client-video">
+                        <span class="icon-video-play" data-href="https://www.youtube.com/embed/i2zvP67Rr1s"
+                            data-toggle="modal" data-target="#home-modal"><span class="path1"></span><span
+                                class="path2"></span></span>
+                        <div class="client-name">
+                            <h3>Kevin Giffhorn</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-box swiper-slide">
+                    <div class="client-img">
+                        <img src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20740%20410'%3E%3C/svg%3E"
+                            alt="Kathleen O Martinez" width="740" height="410"
+                            data-lazy-src="https://dcdh7ea8gkhvt.cloudfront.net/wp-content/uploads/2022/02/kathleen-o-martinez-slide-img-1.webp" /><noscript><img
+                                src="https://dcdh7ea8gkhvt.cloudfront.net/wp-content/uploads/2022/02/kathleen-o-martinez-slide-img-1.webp"
+                                alt="Kathleen O Martinez" width="740" height="410" /></noscript>
+                    </div>
+                    <div class="client-video">
+                        <span class="icon-video-play" data-href="https://www.youtube.com/embed/jgQaCitc9UM"
+                            data-toggle="modal" data-target="#home-modal"><span class="path1"></span><span
+                                class="path2"></span></span>
+                        <div class="client-name">
+                            <h3>Kathleen O Martinez</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+    <div class="modal modal-vcenter fade modal-slider" id="home-modal" tabindex="-1" role="dialog"
+        aria-labelledby="basicModal" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-close-btn">
+                    <div class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </div>
+                </div>
+                <div class="modal-body">
+
+                    <iframe width="100%" height="540" src="" title="YouTube video player" frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen ng-show="showvideo"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="rocketlazyloadscript" data-rocket-type="text/javascript">window.addEventListener('DOMContentLoaded', function() {
+jQuery(document).ready(function(){
+  jQuery('body').on('hide.bs.modal', '.modal', function() {    
+    const $modal = jQuery(this);
+    // return early if there were no embedded YouTube videos
+    if ($modal.find('iframe').length === 0) return;
+    const html = $modal.html();
+    $modal.html(html);
+  });
+  jQuery('body').on('show.bs.modal', '.modal', function(event) {     
+    var reference_tag = jQuery(event.relatedTarget); 
+    var myhref = reference_tag.data('href');
+    jQuery("#home-modal iframe").attr('src', myhref);
+    //alert(myhrefid);
+    });
+});
+});</script>
+    <section class="blog-wrap p-tb-120">
+        <div class="container">
+            <h2 class="text-center">Latest Articles</h2>
+            <div class="listing-view">
+                <div class="row">
+                    <div class="col-md-6 col-lg-4 col-xl-4 mar-top-30">
+                        <div class="listing-sm-img">
+                            <a href="https://www.indianic.com/blog/artificial-intelligence/ai-powered-management-of-construction-projects.html"
+                                aria-label="AI Powered Management Of Construction Projects">
+                                <img src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20350%20210'%3E%3C/svg%3E"
+                                    alt="AI Powered Management Of Construction Projects" width="350" height="210"
+                                    data-lazy-src="https://dcdh7ea8gkhvt.cloudfront.net/wp-content/uploads/2024/01/hm-ai-powered-managementof-construction-projects-banner-img.jpg"><noscript><img
+                                        src="https://dcdh7ea8gkhvt.cloudfront.net/wp-content/uploads/2024/01/hm-ai-powered-managementof-construction-projects-banner-img.jpg"
+                                        alt="AI Powered Management Of Construction Projects" width="350"
+                                        height="210"></noscript>
+                            </a>
+                        </div>
+                        <div class="blog-listing-detail">
+                            <span class="category">Artificial Intelligence</span>
+                            <a href="https://www.indianic.com/blog/artificial-intelligence/ai-powered-management-of-construction-projects.html"
+                                aria-label="AI Powered Management Of Construction Projects">AI Powered Management Of
+                                Construction Projects</a>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4 col-xl-4 mar-top-30">
+                        <div class="listing-sm-img">
+                            <a href="https://www.indianic.com/blog/artificial-intelligence/redefining-supply-chain-precision-through-ai.html"
+                                aria-label="Redefining Supply Chain Precision Through AI">
+                                <img src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20350%20210'%3E%3C/svg%3E"
+                                    alt="Redefining Supply Chain Precision Through AI" width="350" height="210"
+                                    data-lazy-src="https://dcdh7ea8gkhvt.cloudfront.net/wp-content/uploads/2024/01/hm-redefining-supply-chain-precision-through-ai-bg.jpg"><noscript><img
+                                        src="https://dcdh7ea8gkhvt.cloudfront.net/wp-content/uploads/2024/01/hm-redefining-supply-chain-precision-through-ai-bg.jpg"
+                                        alt="Redefining Supply Chain Precision Through AI" width="350"
+                                        height="210"></noscript>
+                            </a>
+                        </div>
+                        <div class="blog-listing-detail">
+                            <span class="category">Artificial Intelligence</span>
+                            <a href="https://www.indianic.com/blog/artificial-intelligence/redefining-supply-chain-precision-through-ai.html"
+                                aria-label="Redefining Supply Chain Precision Through AI">Redefining Supply Chain
+                                Precision Through AI</a>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4 col-xl-4 mar-top-30">
+                        <div class="listing-sm-img">
+                            <a href="https://www.indianic.com/blog/artificial-intelligence/revolutionizing-ecommerce-with-cognitive-product-search-engine.html"
+                                aria-label="Revolutionizing Ecommerce With Cognitive Product Search Engine">
+                                <img src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20350%20210'%3E%3C/svg%3E"
+                                    alt="Revolutionizing Ecommerce With Cognitive Product Search Engine" width="350"
+                                    height="210"
+                                    data-lazy-src="https://dcdh7ea8gkhvt.cloudfront.net/wp-content/uploads/2024/01/hm-ecommerce-with-cognitive-product-bg.jpg"><noscript><img
+                                        src="https://dcdh7ea8gkhvt.cloudfront.net/wp-content/uploads/2024/01/hm-ecommerce-with-cognitive-product-bg.jpg"
+                                        alt="Revolutionizing Ecommerce With Cognitive Product Search Engine" width="350"
+                                        height="210"></noscript>
+                            </a>
+                        </div>
+                        <div class="blog-listing-detail">
+                            <span class="category">Artificial Intelligence</span>
+                            <a href="https://www.indianic.com/blog/artificial-intelligence/revolutionizing-ecommerce-with-cognitive-product-search-engine.html"
+                                aria-label="Revolutionizing Ecommerce With Cognitive Product Search Engine">Revolutionizing
+                                Ecommerce With Cognitive Product Search Engine</a>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="button-box text-center">
+                <a class="btn-orange" aria-label="More from our Blog" href="https://www.indianic.com/blog/">More
+                    from our Blog</a>
+            </div>
+        </div>
+    </section>
+    </div>
+        </div>
+            </section>
+            <section class="elementor-section elementor-top-section elementor-element elementor-element-a6bb924 elementor-section-full_width elementor-section-height-min-height elementor-section-height-default elementor-section-items-middle" data-id="a6bb924" data-element_type="section" data-settings="{&quot;background_background&quot;:&quot;classic&quot;}">
+                <div class="elementor-background-overlay"></div>
+                <div class="elementor-container elementor-column-gap-no">
+                    <div class="elementor-row">
+                        <div class="elementor-column elementor-col-50 elementor-top-column elementor-element elementor-element-f74abad" data-id="f74abad" data-element_type="column">
+                            <div class="elementor-column-wrap elementor-element-populated">
+                                <div class="elementor-widget-wrap">
+                                    <div class="elementor-element elementor-element-32e6eee elementor-widget elementor-widget-spacer" data-id="32e6eee" data-element_type="widget" data-widget_type="spacer.default">
+                                        <div class="elementor-widget-container">
+                                            <div class="elementor-spacer">
+                                                <div class="elementor-spacer-inner"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="elementor-element elementor-element-adc3cfc elementor-widget elementor-widget-heading" data-id="adc3cfc" data-element_type="widget" data-settings="{&quot;_animation&quot;:&quot;none&quot;,&quot;_animation_delay&quot;:250}" data-widget_type="heading.default">
+                                        <div class="elementor-widget-container">
+                                            <h2 class="elementor-heading-title elementor-size-default">GET IN TOUCH</h2>
+                                        </div>
+                                    </div>
+                                    <div class="elementor-element elementor-element-3d2be48 elementor-widget-divider--view-line elementor-invisible elementor-widget elementor-widget-divider" data-id="3d2be48" data-element_type="widget" data-settings="{&quot;_animation&quot;:&quot;fadeInUp&quot;,&quot;_animation_delay&quot;:250}" data-widget_type="divider.default">
+                                        <div class="elementor-widget-container">
+                                            <div class="elementor-divider">
+                                                <span class="elementor-divider-separator"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="elementor-element elementor-element-f175637 elementor-widget elementor-widget-text-editor" data-id="f175637" data-element_type="widget" data-settings="{&quot;_animation&quot;:&quot;none&quot;,&quot;_animation_delay&quot;:250}" data-widget_type="text-editor.default">
+                                        <div class="elementor-widget-container">
+                                            <div class="elementor-text-editor elementor-clearfix">
+                                                <p>Delivering Innovative and Result Oriented IT solutions to all Enterprises. Committed to serving clients with the best solutions. Tell us about your idea, and we &#8217;re sure we can take to the next level.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="elementor-element elementor-element-8deef20 elementor-widget elementor-widget-heading" data-id="8deef20" data-element_type="widget" data-settings="{&quot;_animation&quot;:&quot;none&quot;}" data-widget_type="heading.default">
+                                        <div class="elementor-widget-container">
+                                            <h2 class="elementor-heading-title elementor-size-default">CONTACT INFORMATION</h2>
+                                        </div>
+                                    </div>
+                                    <div class="elementor-element elementor-element-46c1adb elementor-widget-divider--view-line elementor-widget elementor-widget-divider" data-id="46c1adb" data-element_type="widget" data-settings="{&quot;_animation&quot;:&quot;none&quot;,&quot;_animation_delay&quot;:250}" data-widget_type="divider.default">
+                                        <div class="elementor-widget-container">
+                                            <div class="elementor-divider">
+                                                <span class="elementor-divider-separator"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="elementor-element elementor-element-1bf7d93 elementor-widget-divider--view-line elementor-widget elementor-widget-divider" data-id="1bf7d93" data-element_type="widget" data-widget_type="divider.default">
+                                        <div class="elementor-widget-container">
+                                            <div class="elementor-divider">
+                                                <span class="elementor-divider-separator"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="elementor-element elementor-element-644007b elementor-widget elementor-widget-image" data-id="644007b" data-element_type="widget" data-widget_type="image.default">
+                                        <div class="elementor-widget-container">
+                                            <div class="elementor-image">
+                                                <img width="24" height="19" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2024%2019'%3E%3C/svg%3E" class="attachment-large size-large" alt="" data-lazy-src="https://techyardsoft.com/wp-content/uploads/2019/10/india_map.png"/>
+                                                <noscript>
+                                                    <img width="24" height="19" src="https://techyardsoft.com/wp-content/uploads/2019/10/india_map.png" class="attachment-large size-large" alt=""/>
+                                                </noscript>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="elementor-element elementor-element-f0d4529 elementor-widget elementor-widget-text-editor" data-id="f0d4529" data-element_type="widget" data-settings="{&quot;_animation&quot;:&quot;none&quot;,&quot;_animation_delay&quot;:250}" data-widget_type="text-editor.default">
+                                        <div class="elementor-widget-container">
+                                            <div class="elementor-text-editor elementor-clearfix">
+                                                <p>
+                                                    1st-Floor, Asharfi commercial complex, Malviya Nagar, Jaipur, Rajasthan, India<br/>Phone: +91-141-4027357
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="elementor-element elementor-element-58f36ce elementor-widget elementor-widget-image" data-id="58f36ce" data-element_type="widget" data-widget_type="image.default">
+                                        <div class="elementor-widget-container">
+                                            <div class="elementor-image">
+                                                <img width="24" height="19" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2024%2019'%3E%3C/svg%3E" class="attachment-large size-large" alt="" data-lazy-src="https://techyardsoft.com/wp-content/uploads/2019/10/USAicon.png"/>
+                                                <noscript>
+                                                    <img width="24" height="19" src="https://techyardsoft.com/wp-content/uploads/2019/10/USAicon.png" class="attachment-large size-large" alt=""/>
+                                                </noscript>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="elementor-element elementor-element-a96213b elementor-widget elementor-widget-text-editor" data-id="a96213b" data-element_type="widget" data-settings="{&quot;_animation&quot;:&quot;none&quot;,&quot;_animation_delay&quot;:250}" data-widget_type="text-editor.default">
+                                        <div class="elementor-widget-container">
+                                            <div class="elementor-text-editor elementor-clearfix">
+                                                <p>
+                                                    3100 Ritchie Road Suite A,<br/>
+                                                    Forestville, MD. 20747, USA<br/>Phone: +1-703-9570731
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="elementor-element elementor-element-2e00590 elementor-widget elementor-widget-heading" data-id="2e00590" data-element_type="widget" data-settings="{&quot;_animation&quot;:&quot;none&quot;,&quot;_animation_delay&quot;:250}" data-widget_type="heading.default">
+                                        <div class="elementor-widget-container">
+                                            <h2 class="elementor-heading-title elementor-size-default">EMAIL US AT</h2>
+                                        </div>
+                                    </div>
+                                    <div class="elementor-element elementor-element-11553d9 elementor-widget elementor-widget-text-editor" data-id="11553d9" data-element_type="widget" data-settings="{&quot;_animation&quot;:&quot;none&quot;,&quot;_animation_delay&quot;:250}" data-widget_type="text-editor.default">
+                                        <div class="elementor-widget-container">
+                                            <div class="elementor-text-editor elementor-clearfix">
+                                                <p>
+                                                    sales@techyardsoft.com<br/>info@techyardsoft.com
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="elementor-column elementor-col-50 elementor-top-column elementor-element elementor-element-2592299" data-id="2592299" data-element_type="column">
+                            <div class="elementor-column-wrap elementor-element-populated">
+                                <div class="elementor-widget-wrap">
+                                    <div class="elementor-element elementor-element-d70f266 elementor-widget elementor-widget-shortcode" data-id="d70f266" data-element_type="widget" data-widget_type="shortcode.default">
+                                        <div class="elementor-widget-container">
+                                            <div class="elementor-shortcode">
+                                                <div role="form" class="wpcf7" id="wpcf7-f2249-p1957-o2" lang="en-US" dir="ltr">
+                                                    <div class="screen-reader-response">
+                                                        <p role="status" aria-live="polite" aria-atomic="true"></p>
+                                                        <ul></ul>
+                                                    </div>
+                                                    <form action="/#wpcf7-f2249-p1957-o2" method="post" class="wpcf7-form init" novalidate="novalidate" data-status="init">
+                                                        <div style="display: none;">
+                                                            <input type="hidden" name="_wpcf7" value="2249"/>
+                                                            <input type="hidden" name="_wpcf7_version" value="5.3.2"/>
+                                                            <input type="hidden" name="_wpcf7_locale" value="en_US"/>
+                                                            <input type="hidden" name="_wpcf7_unit_tag" value="wpcf7-f2249-p1957-o2"/>
+                                                            <input type="hidden" name="_wpcf7_container_post" value="1957"/>
+                                                            <input type="hidden" name="_wpcf7_posted_data_hash" value=""/>
+                                                            <input type="hidden" name="_wpcf7_recaptcha_response" value=""/>
+                                                        </div>
+                                                        <style>
+                                                            <p>.wpcf7 .wpcf7-validation-errors {
+                                                                color: #fff;
+                                                                background-color: #eb1f1f
+                                                            }
+
+                                                            div.wpcf7-spam-blocked {
+                                                                border: 2px solid #eb1f1f;
+                                                                background-color: #eb1f1f;
+                                                                color: #fff;
+                                                                </p><p>}
+
+                                                            div.wpcf7-mail-sent-ok {
+                                                                border: 2px solid #398f14;
+                                                                background-color: #398f14;
+                                                                color: #fff
+                                                            }
+
+                                                            </p><p>div.wpcf7-response-output {
+                                                                background-color: #398f14;
+                                                                color: #fff
+                                                            }
+
+                                                            div.wpcf7 .wpcf7-validation-errors {
+                                                                border: 2px solid #eb1f1f;
+                                                                background-color: #eb1f1f;
+                                                                color: #fff
+                                                            }
+                                                        </style>
+                                                        <fieldset>
+                                                            <legend style="color:white">Your Details</legend>
+                                                            <ol style:none;>
+                                                                <div style=" margin-bottom: 15px; " class="aria-live=" assertive "><li style=" list-style: none; width: 96%;"><span class=" wpcf7-form-control-wrap your-name "><input type=" text " name=" your-name " value="" size=" 40 " class=" wpcf7-form-control wpcf7-text wpcf7-validates-as-required " aria-required=" true " aria-invalid=" false " placeholder=" Name*" /></span></li></div><div style=" margin-bottom: 15px " class=" use-floating-validation-tip "><li style=" list-style: none;width: 96%;"> <span class=" wpcf7-form-control-wrap email-343 "><input type=" email " name=" email-343 " value="" size=" 40 " class=" wpcf7-form-control wpcf7-text wpcf7-email wpcf7-validates-as-required wpcf7-validates-as-email " aria-required=" true " aria-invalid=" false " placeholder=" Email*" /></span></li></p></div><div style=" margin-bottom: 15px " class=" use-floating-validation-tip "><li style=" list-style: none;width: 96%;"><span class=" wpcf7-form-control-wrap your-tel "><input type=" tel " name=" your-tel " value="" size=" 40 " maxlength=" 15 " minlength=" 10 " class=" wpcf7-form-control wpcf7-text wpcf7-tel wpcf7-validates-as-required wpcf7-validates-as-tel " aria-required=" true " aria-invalid=" false " placeholder=" Phone no*" /></span></div><div style=" margin-bottom: 15px "class=" use-floating-validation-tip "><li style=" list-style: none;width: 96%;"><span class=" wpcf7-form-control-wrap textarea-713 "><textarea name=" textarea-713 " cols=" 40 " rows=" 10 " class=" wpcf7-form-control wpcf7-textarea wpcf7-validates-as-required " aria-required=" true " aria-invalid=" false " placeholder=" Message*"></textarea></span></li></div><li style=" list-style: none;"><div class=" wpcf7-form-control-wrap "><div data-sitekey=" 6LcFPOUUAAAAAJ_F4EFU3cFyjIUYFhR7UC-8AC6a " class=" wpcf7-form-control g-recaptcha wpcf7-recaptcha "></div> <noscript><div class=" grecaptcha-noscript "> <iframe src=" https://www.google.com/recaptcha/api/fallback?k=6LcFPOUUAAAAAJ_F4EFU3cFyjIUYFhR7UC-8AC6a " frameborder=" 0 " scrolling=" no " width=" 310 " height=" 430 "> </iframe><textarea name=" g-recaptcha-response " rows=" 3 " cols=" 40 " placeholder=" reCaptcha Response Here ">
+                                                                    
+</textarea></div> </noscript></div></li><div  style=" margin-bottom: 15px "></div><li style=" list-style: none;"><input type=" submit 
+ </h2></div></div><section class=" elementor-section elementor-inner-section elementor-element elementor-element-9a372b6 elementor-section-boxed elementor-section-height-default elementor-section-height-default " data-id=" 9a372b6 " data-element_type=" section "><div class=" elementor-container elementor-column-gap-default "><div class=" elementor-row "><div class=" elementor-column elementor-col-100 elementor-inner-column elementor-element elementor-element-72e466d " data-id=" 72e466d " data-element_type=" column "><div class=" elementor-column-wrap elementor-element-populated "><div class=" elementor-widget-wrap "><div class=" elementor-element elementor-element-e1d4293 elementor-widget elementor-widget-html " data-id=" e1d4293 " data-element_type=" widget " data-widget_type=" html.default "><div class=" elementor-widget-container "> <!DOCTYPE html><html><head><style>a.ans:hover{color:green}a.ans:visited{color:grey}a.ans{font-style:normal;font-weight:500;font-size:17px;line-height:2}</style></head><body><a class=" ans "   href=" https://techyardsoft.com/terms-conditions /">> Terms & Condition</a></body></html></div></div></div></div></div></div></div></section><section class=" elementor-section elementor-inner-section elementor-element elementor-element-81b03d8 elementor-section-boxed elementor-section-height-default elementor-section-height-default " data-id=" 81b03d8 " data-element_type=" section "><div class=" elementor-container elementor-column-gap-default "><div class=" elementor-row "><div class=" elementor-column elementor-col-100 elementor-inner-column elementor-element elementor-element-4ec7a19 " data-id=" 4ec7a19 " data-element_type=" column "><div class=" elementor-column-wrap elementor-element-populated "><div class=" elementor-widget-wrap "><div class=" elementor-element elementor-element-ec44fee elementor-widget elementor-widget-html " data-id=" ec44fee " data-element_type=" widget " data-widget_type=" html.default "><div class=" elementor-widget-container "> <!DOCTYPE html><html><head><style>a.ans:hover{color:green}a.ans:visited{color:grey}a.ans{font-style:normal;font-weight:500;font-size:17px;line-height:2}</style></head><body><a class=" ans "   href=" https://techyardsoft.com/showcase /">> Work</a></body></html></div></div></div></div></div></div></div></section><section class=" elementor-section elementor-inner-section elementor-element elementor-element-2a0335e elementor-section-boxed elementor-section-height-default elementor-section-height-default " data-id=" 2a0335e " data-element_type=" section "><div class=" elementor-container elementor-column-gap-default "><div class=" elementor-row "><div class=" elementor-column elementor-col-100 elementor-inner-column elementor-element elementor-element-881d865 " data-id=" 881d865 " data-element_type=" column "><div class=" elementor-column-wrap elementor-element-populated "><div class=" elementor-widget-wrap "><div class=" elementor-element elementor-element-2e4daf4 elementor-widget elementor-widget-html " data-id=" 2e4daf4 " data-element_type=" widget " data-widget_type=" html.default "><div class=" elementor-widget-container "> <!DOCTYPE html><html><head><style>a.ans:hover{color:green}a.ans:visited{color:grey}a.ans{font-style:normal;font-weight:500;font-size:17px;line-height:2}</style></head><body><a class=" ans "   href=" https://techyardsoft.com/privacy-policy /">> Privacy policy</a></body></html></div></div></div></div></div></div></div></section><section class=" elementor-section elementor-inner-section elementor-element elementor-element-9cde738 elementor-section-boxed elementor-section-height-default elementor-section-height-default " data-id=" 9cde738 " data-element_type=" section "><div class=" elementor-container elementor-column-gap-default "><div class=" elementor-row "><div class=" elementor-column elementor-col-100 elementor-inner-column elementor-element elementor-element-5995b29 " data-id=" 5995b29 " data-element_type=" column "><div class=" elementor-column-wrap elementor-element-populated "><div class=" elementor-widget-wrap "><div class=" elementor-element elementor-element-ca78da1 elementor-widget elementor-widget-html " data-id=" ca78da1 " data-element_type=" widget " data-widget_type=" html.default "><div class=" elementor-widget-container "> <!DOCTYPE html><html><head><style>a.ans:hover{color:red}</style></head><body></body></html></div></div></div></div></div></div></div></section></div></div></div></div></div></section><section class=" elementor-section elementor-top-section elementor-element elementor-element-33f86a64 elementor-section-boxed elementor-section-height-default elementor-section-height-default " data-id=" 33f86a64 " data-element_type=" section " data-settings=" {&quot;background_background&quot;:&quot;classic&quot;}"><div class=" elementor-container elementor-column-gap-default "><div class=" elementor-row "><div class=" elementor-column elementor-col-100 elementor-top-column elementor-element elementor-element-332fb472 " data-id=" 332fb472 " data-element_type=" column "><div class=" elementor-column-wrap elementor-element-populated "><div class=" elementor-widget-wrap "><div class=" elementor-element elementor-element-342d5f94 elementor-widget elementor-widget-text-editor " data-id=" 342d5f94 " data-element_type=" widget " data-widget_type=" text-editor.default "><div class=" elementor-widget-container "><div class=" elementor-text-editor elementor-clearfix "><div class=" footer-bottom "><div class=" row "><div class=" col-twelve "><div class=" copyright "></div> <script>document.getElementsByClassName('copyright')[0].innerHTML = '© Copyright Techyard Softwares ' + new Date().getFullYear() + 
+    
+' ' + 
+'All rights reserved';</script> </div></div></div></div></div></div></div></div></div></div></div></section>
+        </section>
+        <!-- Footer Address Section End -->
+
+        <!-- Footer Section Start -->
+        <footer class="footer-section" style="background-color: purple;">
+            <div class="container">
+                <div class="row desktop-footer">
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <div class="row">
+                            <div class="col-6 col-md-4 col-lg-7">
+                                <div class="footer-logo">
+                                    <img src="img/tecg.jpg" alt="">
+                                </div>
+
+                                <div class="email-box">
+                                    <p class="title">Get Free Estimation</p>
+                                    <!-- Footer Seetings / Email Details -->
+                                    <a href="mailto:hello@techjuly.com"
+                                        aria-label="hello@techjuly.com">hello@techjuly.com</a>
+                                </div>
+
+                                <div class="phone-number-box">
+                                    <p class="title">Call</p>
+                                    <div class="country-number">
+                                        <img src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2023%2017'%3E%3C/svg%3E"
+                                            alt="" width="23" height="17"
+                                            data-lazy-src="https://dcdh7ea8gkhvt.cloudfront.net/wp-content/uploads/2022/02/ic-flag-india1x.svg" /><noscript><img
+                                                src="https://dcdh7ea8gkhvt.cloudfront.net/wp-content/uploads/2022/02/ic-flag-india1x.svg"
+                                                alt="" width="23" height="17" /></noscript>
+                                        <a href="tel:+917961916000" aria-label="+91 79 6191 6000">+91 79 6191 6000</a>
+                                    </div>
+                                    <div class="country-number">
+                                        <img src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2023%2017'%3E%3C/svg%3E"
+                                            alt="" width="23" height="17"
+                                            data-lazy-src="https://dcdh7ea8gkhvt.cloudfront.net/wp-content/uploads/2022/02/ic-flag-uae1x.svg" /><noscript><img
+                                                src="https://dcdh7ea8gkhvt.cloudfront.net/wp-content/uploads/2022/02/ic-flag-uae1x.svg"
+                                                alt="" width="23" height="17" /></noscript>
+                                        <a href="tel:+97148342243" aria-label="+971 4 834 2243">+971 4 834 2243</a>
+                                    </div>
+                                    <div class="country-number">
+                                        <img src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2023%2017'%3E%3C/svg%3E"
+                                            alt="" width="23" height="17"
+                                            data-lazy-src="https://dcdh7ea8gkhvt.cloudfront.net/wp-content/uploads/2022/02/ic-flag-us1x.svg" /><noscript><img
+                                                src="https://dcdh7ea8gkhvt.cloudfront.net/wp-content/uploads/2022/02/ic-flag-us1x.svg"
+                                                alt="" width="23" height="17" /></noscript>
+                                        <a href="tel:+1(424)2834679" aria-label="+1 (424) 283 4679">+1 (424) 283
+                                            4679</a>
+                                    </div>
+                                    <div class="country-number">
+                                        <img src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2023%2017'%3E%3C/svg%3E"
+                                            alt="" width="23" height="17"
+                                            data-lazy-src="https://dcdh7ea8gkhvt.cloudfront.net/wp-content/uploads/2022/02/ic-flag-au1x.svg" /><noscript><img
+                                                src="https://dcdh7ea8gkhvt.cloudfront.net/wp-content/uploads/2022/02/ic-flag-au1x.svg"
+                                                alt="" width="23" height="17" /></noscript>
+                                        <a href="tel:+61(02)83171138" aria-label="+61  (02)  8317 1138">+61 (02) 8317
+                                            1138</a>
+                                    </div>
+                                </div>
+                                <div class="dmca-protected">
+                                    <img alt="dmca"
+                                        src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2096%2016'%3E%3C/svg%3E"
+                                        width="96" height="16"
+                                        data-lazy-src="https://dcdh7ea8gkhvt.cloudfront.net/wp-content/themes/indianic/assets/images/homepage/dmca-protected.jpg" /><noscript><img
+                                            alt="dmca"
+                                            src="https://dcdh7ea8gkhvt.cloudfront.net/wp-content/themes/indianic/assets/images/homepage/dmca-protected.jpg"
+                                            width="96" height="16" /></noscript>
+                                </div>
+                            </div>
+                            <div class="col-6 col-md-4 col-lg-5 f-mar-top-30 pad-lft-0">
+                                <div class="menu-title">
+                                    <h6>Company</h6>
+                                </div>
+                                <ul>
+                                    <li>
+                                        <a href="https://www.indianic.com/about/" area-label="About Us">About Us</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.indianic.com/careers/" area-label="Careers">Careers</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.indianic.com/blog/" area-label="Blog">Blog</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.indianic.com/how-to-engage/" area-label="How to Engage">How
+                                            to Engage</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.indianic.com/we-work-with/" area-label="We Work With">We
+                                            Work With</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.indianic.com/testimonials/"
+                                            area-label="Testimonials">Testimonials</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.indianic.com/faqs/" area-label="FAQs">FAQs</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.indianic.com/covid-19/" area-label="Covid-19">Covid-19</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.indianic.com/policies/" area-label="Policies">Policies</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.indianic.com/sitemap/" area-label="Sitemap">Sitemap</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.indianic.com/contact/" area-label="Contact">Contact</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-5 f-mar-top-30 services-box">
+                        <div class="menu-title">
+                            <h6>Services</h6>
+                        </div>
+                        <div class="row">
+                            <div class="col-6 col-md-6">
+                                <ul>
+                                    <li>
+                                        <a href="https://www.indianic.com/services/mobile/android-application-development-company/"
+                                            area-label="Android App Development">Android App Development</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.indianic.com/services/web/angularjs-development-company/"
+                                            area-label="AngularJS Development">AngularJS Development</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.indianic.com/services/mobile/augmented-reality-app-development/"
+                                            area-label="Augmented Reality">Augmented Reality</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.indianic.com/services/web/aws-cloud-applications-development-company/"
+                                            area-label="AWS Development">AWS Development</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.indianic.com/services/web/bigcommerce-web-development/"
+                                            area-label="BigCommerce">BigCommerce</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.indianic.com/services/web/cakephp-application-development/"
+                                            area-label="CakePHP Development">CakePHP Development</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.indianic.com/services/web/codeigniter-web-development/"
+                                            area-label="CodeIgniter Development">CodeIgniter Development</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.indianic.com/services/mobile/cross-platform-mobile-app-development/"
+                                            area-label="Cross-platform Apps">Cross-platform Apps</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.indianic.com/services/web/asp-dot-net-web-development-services/"
+                                            area-label=".Net Development">.Net Development</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.indianic.com/services/web/drupal-web-development/"
+                                            area-label="Drupal Development">Drupal Development</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.indianic.com/services/web/amazon-dynamodb-development-company/"
+                                            area-label="DynamoDB Development">DynamoDB Development</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.indianic.com/services/web/firebase-development-company/"
+                                            area-label="Firebase Development">Firebase Development</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.indianic.com/services/web/google-cloud-development-company/"
+                                            area-label="Google Cloud">Google Cloud</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.indianic.com/services/mobile/ios-app-development/"
+                                            area-label="iOS App Development">iOS App Development</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.indianic.com/services/web/java-web-application-development/"
+                                            area-label="Java Development">Java Development</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.indianic.com/services/web/joomla-web-development/"
+                                            area-label="Joomla Development">Joomla Development</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.indianic.com/services/web/laravel-application-development/"
+                                            area-label="Laravel Development">Laravel Development</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.indianic.com/services/web/magento-ecommerce-development/"
+                                            area-label="Magento Development">Magento Development</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-6 col-md-6 pad-lft-0">
+                                <ul>
+                                    <li>
+                                        <a href="https://www.indianic.com/services/web/mongodb-development-company/"
+                                            area-label="MongoDB Development">MongoDB Development</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.indianic.com/services/web/mysql-development-company/"
+                                            area-label="MySQL App Development">MySQL App Development</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.indianic.com/services/web/nodejs-development-company/"
+                                            area-label="NodeJS Development">NodeJS Development</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.indianic.com/services/web/opencart-development-services/"
+                                            area-label="OpenCart Development">OpenCart Development</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.indianic.com/services/web/oracle-database-application-development/"
+                                            area-label="Oracle Development">Oracle Development</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.indianic.com/services/web/oscommerce-development/"
+                                            area-label="OsCommerce">OsCommerce</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.indianic.com/services/web/php-development-services/"
+                                            area-label="PHP Development">PHP Development</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.indianic.com/services/mobile/progressive-web-app-development/"
+                                            area-label="PWA Development">PWA Development</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.indianic.com/services/web/python-web-development/"
+                                            area-label="Python Development">Python Development</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.indianic.com/services/mobile/react-native-app-development/"
+                                            area-label="React Native">React Native</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.indianic.com/services/web/reactjs-development-company/"
+                                            area-label="ReactJS Development">ReactJS Development</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.indianic.com/services/web/redis-database-development-company/"
+                                            area-label="Redis Development">Redis Development</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.indianic.com/services/web/ruby-on-rails-development-company/"
+                                            area-label="RoR Development">RoR Development</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.indianic.com/services/web/shopify-ecommerce-development/"
+                                            area-label="Shopify Development">Shopify Development</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.indianic.com/services/web/vuejs-development-company/"
+                                            area-label="VueJS Development">VueJS Development</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.indianic.com/services/web/woocommerce-development/"
+                                            area-label="WooCommerce">WooCommerce</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.indianic.com/services/web/wordpress-website-development/"
+                                            area-label="WordPress  Development">WordPress Development</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-12 col-lg-3 f-mar-top-30 box-pad-40 solution-box">
+                        <div class="menu-title">
+                            <h6>Hire Developer Team</h6>
+                        </div>
+                        <ul>
+                            <li>
+                                <a href="https://www.indianic.com/services/web/hire-angularjs-developers/"
+                                    area-label="AngularJS Developers">AngularJS Developers</a>
+                            </li>
+                            <li>
+                                <a href="https://www.indianic.com/services/mobile/hire-android-app-developers/"
+                                    area-label="Android App Developers">Android App Developers</a>
+                            </li>
+                            <li>
+                                <a href="https://www.indianic.com/services/hire-ai-ml-developers/"
+                                    area-label="AI & ML Developers">AI & ML Developers</a>
+                            </li>
+                            <li>
+                                <a href="https://www.indianic.com/services/web/hire-asp-dot-net-developers/"
+                                    area-label="ASP.NET Developers">ASP.NET Developers</a>
+                            </li>
+                            <li>
+                                <a href="https://www.indianic.com/services/mobile/hire-flutter-app-developers/"
+                                    area-label="Flutter App Developers">Flutter App Developers</a>
+                            </li>
+                            <li>
+                                <a href="https://www.indianic.com/services/web/hire-html5-developers/"
+                                    area-label="HTML5 Developers">HTML5 Developers</a>
+                            </li>
+                            <li>
+                                <a href="https://www.indianic.com/services/mobile/hire-ios-application-developers/"
+                                    area-label="iOS App Developers">iOS App Developers</a>
+                            </li>
+                            <li>
+                                <a href="https://www.indianic.com/services/web/hire-java-developers/"
+                                    area-label="Java Developers">Java Developers</a>
+                            </li>
+                            <li>
+                                <a href="https://www.indianic.com/services/web/hire-magento-developers/"
+                                    area-label="Magento Developers">Magento Developers</a>
+                            </li>
+                            <li>
+                                <a href="https://www.indianic.com/services/web/hire-nodejs-web-developers/"
+                                    area-label="NodeJS Web Developers">NodeJS Web Developers</a>
+                            </li>
+                            <li>
+                                <a href="https://www.indianic.com/services/web/hire-php-web-developers/"
+                                    area-label="PHP Developers">PHP Developers</a>
+                            </li>
+                            <li>
+                                <a href="https://www.indianic.com/services/web/hire-python-developers/"
+                                    area-label="Python Developers">Python Developers</a>
+                            </li>
+                            <li>
+                                <a href="https://www.indianic.com/services/web/hire-reactjs-developers/"
+                                    area-label="ReactJS Developers">ReactJS Developers</a>
+                            </li>
+                            <li>
+                                <a href="https://www.indianic.com/services/mobile/hire-react-native-app-developers/"
+                                    area-label="React Native App Developers">React Native App Developers</a>
+                            </li>
+                            <li>
+                                <a href="https://www.indianic.com/services/web/hire-shopify-developers/"
+                                    area-label="Shopify Developers">Shopify Developers</a>
+                            </li>
+                            <li>
+                                <a href="https://www.indianic.com/services/web/hire-vue-js-developers/"
+                                    area-label="VueJS Developers">VueJS Developers</a>
+                            </li>
+                            <li>
+                                <a href="https://www.indianic.com/services/web/hire-wordpress-developers/"
+                                    area-label="WordPress Developers">WordPress Developers</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+
+                <div class="sub-footer">
+                    <div class="row align-items-center">
+                        <div class="col-12 col-md-12 col-lg-12 col-xl-8">
+                            <div class="copyright">
+                                <div class="btm-text">
+                                    <div class="copyright-recaptcha">
+                                        <p>(C) 2024, Techjuly Infotech Limited.
+                                        <p> Protected by Google <a
+                                                href="https://policies.google.com/terms">reCAPTCHA</a>. Read our <a
+                                                href="https://www.indianic.com/policies/">Terms and Policies</a>.</p>
+                                        </p>
+                                    </div>
+                                    <p>Techjuly logo, brandmark and name are a registered trademark of Techjuly Infotech
+                                        Limited.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-12 col-lg-12 col-xl-4">
+                            <div class="social-box">
+                                <ul>
+                                    <li>
+                                        <a aria-label="linkedin" class="linkedin" rel="noopener" target="_blank"
+                                            title="Linkedin" href="https://www.linkedin.com/company/indianic"><span
+                                                aria-hidden="true" class="icon-linkedin"></span></a>
+                                    </li>
+                                    <li>
+                                        <a aria-label="instagram" class="instagram" rel="noopener" target="_blank"
+                                            title="Instagram" href="https://www.instagram.com/indianic/"><span
+                                                aria-hidden="true" class="icon-instagram"></span></a>
+                                    </li>
+                                    <li>
+                                        <a aria-label="youtube" class="youtube" rel="noopener" target="_blank"
+                                            title="Youtube" href="https://www.youtube.com/user/indianicinfotech"><span
+                                                aria-hidden="true" class="icon-youtube"></span></a>
+                                    </li>
+                                    <li>
+                                        <a aria-label="twitter" class="twitter" rel="noopener" target="_blank"
+                                            title="Twitter" href="https://twitter.com/indianic"><span aria-hidden="true"
+                                                class="icon-twitter"></span></a>
+                                    </li>
+                                    <li>
+                                        <a aria-label="facebook" class="facebook" rel="noopener" target="_blank"
+                                            title="Facebook"
+                                            href="https://www.facebook.com/indianicinfotechlimited"><span
+                                                aria-hidden="true" class="icon-facebook"></span></a>
+                                    </li>
+                                    <li>
+                                        <a aria-label="dribbble" class="dribbble" rel="noopener" target="_blank"
+                                            title="Dribbble" href="https://dribbble.com/indianic"><span
+                                                aria-hidden="true" class="icon-dribble"></span></a>
+                                    </li>
+                                    <li>
+                                        <a aria-label="medium" class="rss" rel="noopener" title="Medium"
+                                            href="https://medium.com/indianic">
+                                            <span aria-hidden="true" class="icon-medium"><span
+                                                    class="path1"></span><span class="path2"></span><span
+                                                    class="path3"></span><span class="path4"></span></span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a aria-label="blog" class="rss" title="Blog"
+                                            href="https://www.indianic.com/blog" rel="noopener" target="_blank"><span
+                                                aria-hidden="true" class="icon-blog"></span></a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Main Footer Section End -->
+    <!-- Gitex Popup Start -->
+    <div class="gitex-popup-wrap slide-right show_brand_by_dubai" style="display:none">
+        <div class="brand-popup-box">
+            <div class="close-btn">
+                <span class="icon-locker-close-icon"></span>
+            </div>
+            <a class="brand-link" href="https://www.indianic.com/dubai/">
+                <div class="banner">
+                    <img src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20249%20209'%3E%3C/svg%3E"
+                        width="249" height="209" alt=""
+                        data-lazy-src="https://dcdh7ea8gkhvt.cloudfront.net/wp-content/uploads/2023/02/dubai-popup-banner.webp"><noscript><img
+                            src="https://dcdh7ea8gkhvt.cloudfront.net/wp-content/uploads/2023/02/dubai-popup-banner.webp"
+                            width="249" height="209" alt=""></noscript>
+                </div>
+            </a>
+        </div>
+    </div>
+    <!-- Gitex Popup End -->
+
+    <!--brand_logo popup -->
+    <div class="brand-popup-wrap slide-right show_brand_by_country" style="display:none">
+        <div class="brand-popup-box">
+            <div class="close-btn">
+                <span class="icon-locker-close-icon"></span>
+            </div>
+            <a class="brand-link"
+                href="https://www.indianic.com/blog/events-updates/indianic-placed-among-the-best-brands-of-the-year-2021-by-the-economic-times.html">
+                <div class="banner">
+                    <img src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20249%20265'%3E%3C/svg%3E"
+                        width="249" height="265" alt=""
+                        data-lazy-src="https://dcdh7ea8gkhvt.cloudfront.net/wp-content/uploads/2023/08/best-brand-popup-bg.webp"><noscript><img
+                            src="https://dcdh7ea8gkhvt.cloudfront.net/wp-content/uploads/2023/08/best-brand-popup-bg.webp"
+                            width="249" height="265" alt=""></noscript>
+                </div>
+            </a>
+        </div>
+    </div>
+    <!-- Job Apply Popup Start -->
+
+    <!-- Job Apply Popup End -->
+
+    <!-- USA Page Popup Start -->
+    <div class="usa-popup-wrap slide-right show_usa_popup_by_country" style="display:none">
+        <div class="brand-popup-box">
+            <div class="close-btn">
+                <span class="icon-locker-close-icon"></span>
+            </div>
+            <a class="brand-link" href="https://www.indianic.com/usa/">
+                <div class="banner">
+                    <img src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20249%20209'%3E%3C/svg%3E"
+                        width="249" height="209" alt="Meet in USA"
+                        data-lazy-src="https://dcdh7ea8gkhvt.cloudfront.net/wp-content/uploads/2024/01/usa-popup-banner.png"><noscript><img
+                            src="https://dcdh7ea8gkhvt.cloudfront.net/wp-content/uploads/2024/01/usa-popup-banner.png"
+                            width="249" height="209" alt="Meet in USA"></noscript>
+                </div>
+            </a>
+        </div>
+    </div>
+    <!-- USA Page Popup End -->
+
+
+
+    <!-- Common Sidebar Section Start -->
+    <!-- Modal -->
+
+    <!-- modal -->
+    <!-- Common Sidebar Section End -->
+
+    <script type="rocketlazyloadscript" data-rocket-type="module">
+    import Typebot from 'https://dcdh7ea8gkhvt.cloudfront.net/wp-content/themes/indianic/assets/scripts/typebot-web.js';
+
+    Typebot.initStandard({
+        typebot: "chatbot-entrance-ws3m24d",
+        apiHost: "https://bot.integratex.com",
+    });
+    Typebot.open();
+</script>
+    <script type="rocketlazyloadscript" data-minify="1"
+        src='https://dcdh7ea8gkhvt.cloudfront.net/wp-content/cache/min/1/wp-content/plugins/structured-content/dist/app.build.js?ver=1706095956'
+        id='structured-content-frontend-js' defer></script>
+    <script type="rocketlazyloadscript" id='rocket-browser-checker-js-after'>
+"use strict";var _createClass=function(){function defineProperties(target,props){for(var i=0;i<props.length;i++){var descriptor=props[i];descriptor.enumerable=descriptor.enumerable||!1,descriptor.configurable=!0,"value"in descriptor&&(descriptor.writable=!0),Object.defineProperty(target,descriptor.key,descriptor)}}return function(Constructor,protoProps,staticProps){return protoProps&&defineProperties(Constructor.prototype,protoProps),staticProps&&defineProperties(Constructor,staticProps),Constructor}}();function _classCallCheck(instance,Constructor){if(!(instance instanceof Constructor))throw new TypeError("Cannot call a class as a function")}var RocketBrowserCompatibilityChecker=function(){function RocketBrowserCompatibilityChecker(options){_classCallCheck(this,RocketBrowserCompatibilityChecker),this.passiveSupported=!1,this._checkPassiveOption(this),this.options=!!this.passiveSupported&&options}return _createClass(RocketBrowserCompatibilityChecker,[{key:"_checkPassiveOption",value:function(self){try{var options={get passive(){return!(self.passiveSupported=!0)}};window.addEventListener("test",null,options),window.removeEventListener("test",null,options)}catch(err){self.passiveSupported=!1}}},{key:"initRequestIdleCallback",value:function(){!1 in window&&(window.requestIdleCallback=function(cb){var start=Date.now();return setTimeout(function(){cb({didTimeout:!1,timeRemaining:function(){return Math.max(0,50-(Date.now()-start))}})},1)}),!1 in window&&(window.cancelIdleCallback=function(id){return clearTimeout(id)})}},{key:"isDataSaverModeOn",value:function(){return"connection"in navigator&&!0===navigator.connection.saveData}},{key:"supportsLinkPrefetch",value:function(){var elem=document.createElement("link");return elem.relList&&elem.relList.supports&&elem.relList.supports("prefetch")&&window.IntersectionObserver&&"isIntersecting"in IntersectionObserverEntry.prototype}},{key:"isSlowConnection",value:function(){return"connection"in navigator&&"effectiveType"in navigator.connection&&("2g"===navigator.connection.effectiveType||"slow-2g"===navigator.connection.effectiveType)}}]),RocketBrowserCompatibilityChecker}();
+</script>
+    <script id='rocket-preload-links-js-extra'>
+        var RocketPreloadLinksConfig = { "excludeUris": "\/careers\/|\/thank-you\/|\/optimise\/|\/(.+\/)?feed\/?.+\/?|\/(?:.+\/)?embed\/|\/(index\\.php\/)?wp\\-json(\/.*|$)|\/wp-admin\/|\/logout\/|\/wp-login.php", "usesTrailingSlash": "1", "imageExt": "jpg|jpeg|gif|png|tiff|bmp|webp|avif", "fileExt": "jpg|jpeg|gif|png|tiff|bmp|webp|avif|php|pdf|html|htm", "siteUrl": "https:\/\/www.indianic.com", "onHoverDelay": "100", "rateThrottle": "3" };
+    </script>
+    <script type="rocketlazyloadscript" id='rocket-preload-links-js-after'>
+(function() {
+"use strict";var r="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e},e=function(){function i(e,t){for(var n=0;n<t.length;n++){var i=t[n];i.enumerable=i.enumerable||!1,i.configurable=!0,"value"in i&&(i.writable=!0),Object.defineProperty(e,i.key,i)}}return function(e,t,n){return t&&i(e.prototype,t),n&&i(e,n),e}}();function i(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}var t=function(){function n(e,t){i(this,n),this.browser=e,this.config=t,this.options=this.browser.options,this.prefetched=new Set,this.eventTime=null,this.threshold=1111,this.numOnHover=0}return e(n,[{key:"init",value:function(){!this.browser.supportsLinkPrefetch()||this.browser.isDataSaverModeOn()||this.browser.isSlowConnection()||(this.regex={excludeUris:RegExp(this.config.excludeUris,"i"),images:RegExp(".("+this.config.imageExt+")$","i"),fileExt:RegExp(".("+this.config.fileExt+")$","i")},this._initListeners(this))}},{key:"_initListeners",value:function(e){-1<this.config.onHoverDelay&&document.addEventListener("mouseover",e.listener.bind(e),e.listenerOptions),document.addEventListener("mousedown",e.listener.bind(e),e.listenerOptions),document.addEventListener("touchstart",e.listener.bind(e),e.listenerOptions)}},{key:"listener",value:function(e){var t=e.target.closest("a"),n=this._prepareUrl(t);if(null!==n)switch(e.type){case"mousedown":case"touchstart":this._addPrefetchLink(n);break;case"mouseover":this._earlyPrefetch(t,n,"mouseout")}}},{key:"_earlyPrefetch",value:function(t,e,n){var i=this,r=setTimeout(function(){if(r=null,0===i.numOnHover)setTimeout(function(){return i.numOnHover=0},1e3);else if(i.numOnHover>i.config.rateThrottle)return;i.numOnHover++,i._addPrefetchLink(e)},this.config.onHoverDelay);t.addEventListener(n,function e(){t.removeEventListener(n,e,{passive:!0}),null!==r&&(clearTimeout(r),r=null)},{passive:!0})}},{key:"_addPrefetchLink",value:function(i){return this.prefetched.add(i.href),new Promise(function(e,t){var n=document.createElement("link");n.rel="prefetch",n.href=i.href,n.onload=e,n.onerror=t,document.head.appendChild(n)}).catch(function(){})}},{key:"_prepareUrl",value:function(e){if(null===e||"object"!==(void 0===e?"undefined":r(e))||!1 in e||-1===["http:","https:"].indexOf(e.protocol))return null;var t=e.href.substring(0,this.config.siteUrl.length),n=this._getPathname(e.href,t),i={original:e.href,protocol:e.protocol,origin:t,pathname:n,href:t+n};return this._isLinkOk(i)?i:null}},{key:"_getPathname",value:function(e,t){var n=t?e.substring(this.config.siteUrl.length):e;return n.startsWith("/")||(n="/"+n),this._shouldAddTrailingSlash(n)?n+"/":n}},{key:"_shouldAddTrailingSlash",value:function(e){return this.config.usesTrailingSlash&&!e.endsWith("/")&&!this.regex.fileExt.test(e)}},{key:"_isLinkOk",value:function(e){return null!==e&&"object"===(void 0===e?"undefined":r(e))&&(!this.prefetched.has(e.href)&&e.origin===this.config.siteUrl&&-1===e.href.indexOf("?")&&-1===e.href.indexOf("#")&&!this.regex.excludeUris.test(e.href)&&!this.regex.images.test(e.href))}}],[{key:"run",value:function(){"undefined"!=typeof RocketPreloadLinksConfig&&new n(new RocketBrowserCompatibilityChecker({capture:!0,passive:!0}),RocketPreloadLinksConfig).init()}}]),n}();t.run();
+}());
+</script>
+    <script type="rocketlazyloadscript" id='daim-track-internal-links-js-before'>
+window.DAIM_PARAMETERS = {ajax_url: "https://www.indianic.com/wp-admin/admin-ajax.php",nonce: "3f04367f66"};
+</script>
+    <script type="rocketlazyloadscript" data-minify="1"
+        src='https://dcdh7ea8gkhvt.cloudfront.net/wp-content/cache/min/1/wp-content/plugins/interlinks-manager/public/assets/js/track-internal-links.js?ver=1706095956'
+        id='daim-track-internal-links-js' defer></script>
+    <script type="rocketlazyloadscript" data-minify="1"
+        src='https://dcdh7ea8gkhvt.cloudfront.net/wp-content/cache/min/1/wp-content/themes/indianic/js/navigation.js?ver=1706095956'
+        id='indianic-navigation-js' defer></script>
+    <script id='global-js-extra'>
+        var ajax = { "theme_url": "https:\/\/www.indianic.com\/wp-content\/themes\/indianic\/assets\/", "ajax_nonce": "9b7d298a60", "ajax_url": "https:\/\/www.indianic.com\/wp-admin\/admin-ajax.php", "site_url": "https:\/\/www.indianic.com", "template_directory": "https:\/\/www.indianic.com\/wp-content\/themes\/indianic", "plugin_directory": "https:\/\/www.indianic.com\/wp-content\/plugins", "currentID": "40423", "my_currentpage": "aHR0cHM6Ly93d3cuaW5kaWFuaWMuY29tLw==", "my_page_slug": "home-landing", "page_template": "template-home.php", "is_enable_ajax": "", "session_key": null };
+    </script>
+    <script type="rocketlazyloadscript" data-minify="1"
+        src='https://dcdh7ea8gkhvt.cloudfront.net/wp-content/cache/min/1/wp-content/themes/indianic/assets/scripts/global.js?ver=1706095956'
+        id='global-js' defer></script>
+    <script id='tracking-js-extra'>
+        var ajax = { "theme_url": "https:\/\/www.indianic.com\/wp-content\/themes\/indianic\/assets\/", "ajax_nonce": "9b7d298a60", "ajax_url": "https:\/\/www.indianic.com\/wp-admin\/admin-ajax.php", "site_url": "https:\/\/www.indianic.com", "template_directory": "https:\/\/www.indianic.com\/wp-content\/themes\/indianic", "plugin_directory": "https:\/\/www.indianic.com\/wp-content\/plugins", "currentID": "40423", "my_currentpage": "aHR0cHM6Ly93d3cuaW5kaWFuaWMuY29tLw==", "my_page_slug": "home-landing", "page_template": "template-home.php", "is_enable_ajax": "", "session_key": null };
+    </script>
+    <script type="rocketlazyloadscript"
+        src='https://dcdh7ea8gkhvt.cloudfront.net/wp-content/themes/indianic/assets/scripts/tracking.js?ver=1707145803'
+        id='tracking-js' defer></script>
+    <script type="rocketlazyloadscript"
+        src='https://dcdh7ea8gkhvt.cloudfront.net/wp-content/themes/indianic/assets/scripts/swiper-min.js'
+        id='swiper-js' defer></script>
+    <script type="rocketlazyloadscript"
+        src='https://dcdh7ea8gkhvt.cloudfront.net/wp-content/themes/indianic/assets/scripts/owl.carousel.min.js'
+        id='owl-js' defer></script>
+    <script id='jclocks-js-extra'>
+        var ajax = { "theme_url": "https:\/\/www.indianic.com\/wp-content\/themes\/indianic\/assets\/", "ajax_nonce": "9b7d298a60", "ajax_url": "https:\/\/www.indianic.com\/wp-admin\/admin-ajax.php", "site_url": "https:\/\/www.indianic.com", "template_directory": "https:\/\/www.indianic.com\/wp-content\/themes\/indianic", "plugin_directory": "https:\/\/www.indianic.com\/wp-content\/plugins", "currentID": "40423", "my_currentpage": "aHR0cHM6Ly93d3cuaW5kaWFuaWMuY29tLw==", "my_page_slug": "home-landing", "page_template": "template-home.php", "is_enable_ajax": "", "session_key": null };
+    </script>
+    <script type="rocketlazyloadscript" data-minify="1"
+        src='https://dcdh7ea8gkhvt.cloudfront.net/wp-content/cache/min/1/wp-content/themes/indianic/assets/scripts/jclocks.js?ver=1706095956'
+        id='jclocks-js' defer></script>
+    <script type="rocketlazyloadscript" data-minify="1"
+        src='https://dcdh7ea8gkhvt.cloudfront.net/wp-content/cache/min/1/wp-content/themes/indianic/assets/scripts/marquee.js?ver=1706095956'
+        id='marquee-js' defer></script>
+    <script id='homepage-js-extra'>
+        var ajax = { "theme_url": "https:\/\/www.indianic.com\/wp-content\/themes\/indianic\/assets\/", "ajax_nonce": "9b7d298a60", "ajax_url": "https:\/\/www.indianic.com\/wp-admin\/admin-ajax.php", "site_url": "https:\/\/www.indianic.com", "template_directory": "https:\/\/www.indianic.com\/wp-content\/themes\/indianic", "plugin_directory": "https:\/\/www.indianic.com\/wp-content\/plugins", "currentID": "40423", "my_currentpage": "aHR0cHM6Ly93d3cuaW5kaWFuaWMuY29tLw==", "my_page_slug": "home-landing", "page_template": "template-home.php", "is_enable_ajax": "", "session_key": null };
+    </script>
+    <script type="rocketlazyloadscript" data-minify="1"
+        src='https://dcdh7ea8gkhvt.cloudfront.net/wp-content/cache/min/1/wp-content/themes/indianic/assets/scripts/homepage.js?ver=1706095958'
+        id='homepage-js' defer></script>
+    <script type="rocketlazyloadscript"
+        src='https://dcdh7ea8gkhvt.cloudfront.net/wp-content/themes/indianic/assets/scripts/bootstrap.min.js'
+        id='bootstrapjs-js' defer></script>
+    <script type="rocketlazyloadscript" data-minify="1"
+        src='https://dcdh7ea8gkhvt.cloudfront.net/wp-content/cache/min/1/wp-content/themes/indianic/assets/scripts/header_menu.js?ver=1706095956'
+        id='header_menu-js' defer></script>
+    <script>window.lazyLoadOptions = { elements_selector: "img[data-lazy-src],.rocket-lazyload", data_src: "lazy-src", data_srcset: "lazy-srcset", data_sizes: "lazy-sizes", class_loading: "lazyloading", class_loaded: "lazyloaded", threshold: 300, callback_loaded: function (element) { if (element.tagName === "IFRAME" && element.dataset.rocketLazyload == "fitvidscompatible") { if (element.classList.contains("lazyloaded")) { if (typeof window.jQuery != "undefined") { if (jQuery.fn.fitVids) { jQuery(element).parent().fitVids() } } } } } }; window.addEventListener('LazyLoad::Initialized', function (e) {
+            var lazyLoadInstance = e.detail.instance; if (window.MutationObserver) {
+                var observer = new MutationObserver(function (mutations) {
+                    var image_count = 0; var iframe_count = 0; var rocketlazy_count = 0; mutations.forEach(function (mutation) {
+                        for (i = 0; i < mutation.addedNodes.length; i++) {
+                            if (typeof mutation.addedNodes[i].getElementsByTagName !== 'function') { continue }
+                            if (typeof mutation.addedNodes[i].getElementsByClassName !== 'function') { continue }
+                            images = mutation.addedNodes[i].getElementsByTagName('img'); is_image = mutation.addedNodes[i].tagName == "IMG"; iframes = mutation.addedNodes[i].getElementsByTagName('iframe'); is_iframe = mutation.addedNodes[i].tagName == "IFRAME"; rocket_lazy = mutation.addedNodes[i].getElementsByClassName('rocket-lazyload'); image_count += images.length; iframe_count += iframes.length; rocketlazy_count += rocket_lazy.length; if (is_image) { image_count += 1 }
+                            if (is_iframe) { iframe_count += 1 }
+                        }
+                    }); if (image_count > 0 || iframe_count > 0 || rocketlazy_count > 0) { lazyLoadInstance.update() }
+                }); var b = document.getElementsByTagName("body")[0]; var config = { childList: !0, subtree: !0 }; observer.observe(b, config)
+            }
+        }, !1)</script>
+    <script type="rocketlazyloadscript" data-no-minify="1" async
+        src="https://dcdh7ea8gkhvt.cloudfront.net/wp-content/plugins/indianic-rocket/assets/js/lazyload/16.1/lazyload.min.js"></script>
+
+    <script
+        type="rocketlazyloadscript">"use strict";var wprRemoveCPCSS=function wprRemoveCPCSS(){var elem;document.querySelector('link[data-rocket-async="style"][rel="preload"]')?setTimeout(wprRemoveCPCSS,200):(elem=document.getElementById("rocket-critical-css"))&&"remove"in elem&&elem.remove()};window.addEventListener?window.addEventListener("load",wprRemoveCPCSS):window.attachEvent&&window.attachEvent("onload",wprRemoveCPCSS);</script>
+    <noscript>
+        <link rel="stylesheet"
+            href="https://dcdh7ea8gkhvt.cloudfront.net/wp-content/cache/min/1/1a35354b1b96cf1960a1276972e827e9.css"
+            media="all" data-minify="1" />
+    </noscript>
+</body>
+
+</html>
+<!-- This website is like a Rocket, isn't it? Performance optimized by Indianic Rocket. Learn more: https://wp-rocket.me - Debug: cached@1707145805 -->
