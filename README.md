@@ -1,3 +1,0 @@
-# indianic
-# indianic
-# indianic
